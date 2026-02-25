@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My FastAPI Project</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
+        header { background: #2c3e50; color: #fff; padding: 16px 32px; }
+        header h1 { font-size: 1.5rem; }
+        main { max-width: 900px; margin: 32px auto; padding: 0 16px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+        .tab-btn { padding: 10px 24px; border: none; border-radius: 6px 6px 0 0;
+                   background: #dde; cursor: pointer; font-size: 1rem; }
+        .tab-btn.active { background: #2c3e50; color: #fff; }
+        .card { background: #fff; border-radius: 8px; padding: 32px;
+                box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 4px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc;
+                border-radius: 6px; font-size: 1rem; }
+        button[type="submit"] { background: #2c3e50; color: #fff; border: none;
+                padding: 12px 32px; border-radius: 6px; cursor: pointer;
+                font-size: 1rem; margin-top: 8px; }
+        button[type="submit"]:hover { background: #3d5166; }
+        .message { margin-top: 16px; padding: 12px; border-radius: 6px; }
+        .success { background: #d4edda; color: #155724; }
+        .error   { background: #f8d7da; color: #721c24; }
+        .hidden  { display: none; }
+        pre { background: #f4f6f9; padding: 12px; border-radius: 6px;
+              overflow-x: auto; font-size: .9rem; margin-top: 12px; }
+    </style>
+</head>
+<body>
+<header><h1>My FastAPI Project</h1></header>
+<main>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('register')">Реєстрація</button>
+        <button class="tab-btn" onclick="showTab('login')">Логін</button>
+        <button class="tab-btn" onclick="showTab('profile')">Профіль</button>
+    </div>
+
+    <!-- Registration -->
+    <div id="tab-register" class="card">
+        <h2>Реєстрація</h2>
+        <form id="form-register">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="reg-email" required placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="reg-username" required placeholder="johndoe">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="reg-password" required placeholder="••••••••">
+            </div>
+            <button type="submit">Зареєструватись</button>
+        </form>
+        <div id="reg-msg" class="message hidden"></div>
+    </div>
+
+    <!-- Login -->
+    <div id="tab-login" class="card hidden">
+        <h2>Логін</h2>
+        <form id="form-login">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="login-username" required placeholder="johndoe">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="login-password" required placeholder="••••••••">
+            </div>
+            <button type="submit">Увійти</button>
+        </form>
+        <div id="login-msg" class="message hidden"></div>
+    </div>
+
+    <!-- Profile -->
+    <div id="tab-profile" class="card hidden">
+        <h2>Профіль</h2>
+        <button onclick="loadProfile()" style="background:#2c3e50;color:#fff;border:none;
+            padding:10px 24px;border-radius:6px;cursor:pointer;font-size:1rem;">
+            Оновити
+        </button>
+        <div id="profile-msg" class="message hidden"></div>
+        <pre id="profile-data"></pre>
+    </div>
+</main>
+
+<script>
+    const API = '/api/v1';
+
+    function showTab(name) {
+        ['register','login','profile'].forEach(t => {
+            document.getElementById('tab-' + t).classList.toggle('hidden', t !== name);
+        });
+        document.querySelectorAll('.tab-btn').forEach((b, i) => {
+            b.classList.toggle('active', ['register','login','profile'][i] === name);
+        });
+    }
+
+    function showMsg(id, text, ok) {
+        const el = document.getElementById(id);
+        el.textContent = text;
+        el.className = 'message ' + (ok ? 'success' : 'error');
+    }
+
+    document.getElementById('form-register').addEventListener('submit', async e => {
+        e.preventDefault();
+        try {
+            const res = await fetch(`${API}/register`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email: document.getElementById('reg-email').value,
+                    username: document.getElementById('reg-username').value,
+                    password: document.getElementById('reg-password').value,
+                })
+            });
+            const data = await res.json();
+            if (res.ok) showMsg('reg-msg', `Користувача "${data.username}" успішно зареєстровано!`, true);
+            else showMsg('reg-msg', data.detail || 'Помилка реєстрації', false);
+        } catch {
+            showMsg('reg-msg', 'Помилка мережі', false);
+        }
+    });
+
+    document.getElementById('form-login').addEventListener('submit', async e => {
+        e.preventDefault();
+        const params = new URLSearchParams({
+            username: document.getElementById('login-username').value,
+            password: document.getElementById('login-password').value,
+        });
+        try {
+            const res = await fetch(`${API}/login`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: params
+            });
+            const data = await res.json();
+            if (res.ok) {
+                localStorage.setItem('token', data.access_token);
+                showMsg('login-msg', 'Успішний вхід! Токен збережено.', true);
+            } else {
+                showMsg('login-msg', data.detail || 'Невірні дані', false);
+            }
+        } catch {
+            showMsg('login-msg', 'Помилка мережі', false);
+        }
+    });
+
+    async function loadProfile() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showMsg('profile-msg', 'Спочатку увійдіть в систему', false);
+            return;
+        }
+        try {
+            const res = await fetch(`${API}/me`, {
+                headers: {'Authorization': `Bearer ${token}`}
+            });
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('profile-msg').className = 'message hidden';
+                document.getElementById('profile-data').textContent = JSON.stringify(data, null, 2);
+            } else {
+                showMsg('profile-msg', data.detail || 'Помилка отримання профілю', false);
+            }
+        } catch {
+            showMsg('profile-msg', 'Помилка мережі', false);
+        }
+    }
+</script>
+</body>
+</html>
