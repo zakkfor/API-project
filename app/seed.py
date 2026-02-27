@@ -1,0 +1,147 @@
+"""
+Початкове заповнення бази даних демонстраційними велосипедами.
+Викликається при старті додатку; нічого не робить, якщо дані вже є.
+"""
+import logging
+
+from app.config import settings
+from app.database import SessionLocal
+from app.crud.user import get_user_by_username, create_user
+from app.crud.bicycle import get_bicycles, create_bicycle
+from app.schemas.user import UserCreate
+from app.schemas.bicycle import BicycleCreate
+
+logger = logging.getLogger(__name__)
+
+SEED_BIKES: list[BicycleCreate] = [
+    BicycleCreate(
+        name="Trek Marlin 7",
+        brand="Trek",
+        model="Marlin 7",
+        type="mountain",
+        price_per_hour=85.0,
+        description="Надійний гірський велосипед для трейлів і позашляхового катання. Алюмінієва рама, 29-дюймові колеса, гідравлічні дискові гальма.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Giant Escape 3",
+        brand="Giant",
+        model="Escape 3",
+        type="city",
+        price_per_hour=55.0,
+        description="Легкий міський гібрид для щоденних поїздок. Зручна посадка, крила та багажник у комплекті.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Specialized Allez",
+        brand="Specialized",
+        model="Allez Sport",
+        type="road",
+        price_per_hour=120.0,
+        description="Класичне шосейне шасі з алюмінієвою рамою та карбоновою вилкою. Shimano Claris 16 швидкостей.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Mongoose Title Pro",
+        brand="Mongoose",
+        model="Title Pro",
+        type="bmx",
+        price_per_hour=40.0,
+        description="Професійний BMX для скейт-парків та вуличних трюків. Хроммолібденова рама, сталеві пеги.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Cannondale Quick Neo",
+        brand="Cannondale",
+        model="Quick Neo SL 2",
+        type="electric",
+        price_per_hour=150.0,
+        description="Швидкий електричний гібрид з мотором Bosch. Запас ходу до 100 км, заряджається за 4 години.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Scott Aspect 950",
+        brand="Scott",
+        model="Aspect 950",
+        type="mountain",
+        price_per_hour=70.0,
+        description="Доступний гірський велосипед для початківців. 27,5 дюйма, 21 передача, механічні дискові гальма.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Merida Crossway 100",
+        brand="Merida",
+        model="Crossway 100",
+        type="city",
+        price_per_hour=50.0,
+        description="Універсальний кросовий велосипед для асфальту та ґрунтових доріжок. Shimano Tourney 21 ск.",
+        is_available=False,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Trek Émonda ALR 5",
+        brand="Trek",
+        model="Émonda ALR 5",
+        type="road",
+        price_per_hour=140.0,
+        description="Легке шосейне рішення для тривалих поїздок. Алюмінієва рама з карбоновою вилкою, Shimano 105.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Haibike AllMtn 3",
+        brand="Haibike",
+        model="AllMtn 3",
+        type="electric",
+        price_per_hour=175.0,
+        description="Електричний гірський байк з мотором Yamaha PW-X3. Ідеальний для екстремальних спусків.",
+        is_available=True,
+        image_url=None,
+    ),
+    BicycleCreate(
+        name="Colony Premise",
+        brand="Colony",
+        model="Premise",
+        type="bmx",
+        price_per_hour=35.0,
+        description="Street BMX для фрістайлу. Цільнозварена хром-молі рама, 4-стояковий руль.",
+        is_available=True,
+        image_url=None,
+    ),
+]
+
+
+def seed_db() -> None:
+    """Заповнює БД тестовими даними, якщо вона порожня."""
+    db = SessionLocal()
+    try:
+        if get_bicycles(db, limit=1):
+            return  # дані вже є
+
+        # Створити системного користувача (або взяти існуючого)
+        user = get_user_by_username(db, "bikehouse")
+        if not user:
+            seed_user = UserCreate(
+                username="bikehouse",
+                email="bikehouse@example.com",
+                password=settings.SEED_USER_PASSWORD,
+            )
+            user = create_user(db, seed_user)
+
+        for bike_data in SEED_BIKES:
+            create_bicycle(db, bike_data, owner_id=user.id)
+
+        db.commit()
+        logger.info("Seed data: %d bicycles added.", len(SEED_BIKES))
+    except Exception:
+        db.rollback()
+        logger.exception("Failed to seed database.")
+        raise
+    finally:
+        db.close()

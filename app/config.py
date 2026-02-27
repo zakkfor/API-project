@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "change-this-to-a-random-secret-key"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    SEED_USER_PASSWORD: str = "BikeHouse2025!"
 
     model_config = SettingsConfigDict(
         env_file=".env",

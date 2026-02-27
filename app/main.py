@@ -8,8 +8,10 @@ from app.api.v1 import router as api_v1_router
 from app.database import Base, engine
 import app.models.user  # noqa: F401 — ensure models are registered
 import app.models.bicycle  # noqa: F401 — ensure models are registered
+from app.seed import seed_db
 
 Base.metadata.create_all(bind=engine)
+seed_db()
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
