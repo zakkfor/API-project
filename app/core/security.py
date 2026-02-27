@@ -74,18 +74,3 @@ def get_current_active_user(current_user=Depends(get_current_user)):
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
-
-
-def get_optional_user(token: str = Depends(OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login", auto_error=False)), db: Session = Depends(get_db)):
-    """Dependency: повертає поточного користувача або None якщо токен відсутній/невалідний"""
-    from app.crud.user import get_user_by_username
-
-    if not token:
-        return None
-    token_data = decode_access_token(token)
-    if token_data is None or token_data.username is None:
-        return None
-    user = get_user_by_username(db, username=token_data.username)
-    if user is None or not user.is_active:
-        return None
-    return user

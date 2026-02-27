@@ -8,10 +8,10 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
         <button onClick={onAbout}>Про нас</button>
         <button onClick={onTypes}>Типи</button>
         <button onClick={onCatalog}>Каталог</button>
-        <button onClick={onAddBike}>+ Додати велосипед</button>
         {user ? (
           <>
             <span className="nav-username">👤 {user.username}</span>
+            <button onClick={onAddBike}>+ Додати велосипед</button>
             <button className="btn-outline" onClick={onLogout}>Вийти</button>
           </>
         ) : (

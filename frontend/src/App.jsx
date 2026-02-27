@@ -92,6 +92,7 @@ export default function App() {
   }
 
   function openAddBike() {
+    if (!user) { setModal('auth'); return }
     setSelectedBike(null)
     setModal('addBike')
   }
