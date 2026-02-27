@@ -21,7 +21,7 @@ class Bicycle(Base):
     description = Column(String, nullable=True)
     is_available = Column(Boolean, default=True)
     image_url = Column(String, nullable=True)
-    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 

@@ -30,7 +30,7 @@ def get_bicycles(
     return query.offset(skip).limit(limit).all()
 
 
-def create_bicycle(db: Session, bicycle: BicycleCreate, owner_id: int) -> Bicycle:
+def create_bicycle(db: Session, bicycle: BicycleCreate, owner_id: Optional[int] = None) -> Bicycle:
     """Створення нового велосипеда"""
     db_bicycle = Bicycle(**bicycle.model_dump(), owner_id=owner_id)
     db.add(db_bicycle)

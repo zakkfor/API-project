@@ -6,7 +6,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
-from app.core.security import get_current_active_user
+from app.core.security import get_current_active_user, get_optional_user
 from app.crud.bicycle import (
     create_bicycle, delete_bicycle, get_bicycle, get_bicycles, update_bicycle
 )
@@ -32,10 +32,11 @@ async def list_bicycles(
 async def add_bicycle(
     bicycle_in: BicycleCreate,
     db: Session = Depends(get_db),
-    current_user=Depends(get_current_active_user),
+    current_user=Depends(get_optional_user),
 ):
-    """Додавання нового велосипеда (потрібна авторизація)"""
-    return create_bicycle(db, bicycle_in, owner_id=current_user.id)
+    """Додавання нового велосипеда (авторизація необов'язкова)"""
+    owner_id = current_user.id if current_user else None
+    return create_bicycle(db, bicycle_in, owner_id=owner_id)
 
 
 @router.get("/{bicycle_id}", response_model=BicycleResponse, tags=["bicycles"])
