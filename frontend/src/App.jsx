@@ -4,7 +4,9 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import StatsBar from './components/StatsBar'
 import FeaturesSection from './components/FeaturesSection'
+import HowItWorks from './components/HowItWorks'
 import TypesSection from './components/TypesSection'
+import TestimonialsSection from './components/TestimonialsSection'
 import BikeGrid from './components/BikeGrid'
 import AuthModal from './components/AuthModal'
 import BikeModal from './components/BikeModal'
@@ -147,7 +149,9 @@ export default function App() {
       />
       <StatsBar total={totalBikes} available={availBikes} />
       <FeaturesSection />
+      <HowItWorks />
       <TypesSection onFilterChange={setFilter} onCatalog={scrollToCatalog} />
+      <TestimonialsSection />
       <BikeGrid
         bikes={bikes}
         loading={loading}
@@ -161,9 +165,33 @@ export default function App() {
         onDelete={handleDelete}
       />
       <footer>
-        <p>🚲 <strong>Bike House</strong> — Твій велосипедний партнер |{' '}
-          <a href="/docs" style={{ color: 'var(--green)' }}>API Docs</a>
-        </p>
+        <div className="footer-content">
+          <div className="footer-brand">
+            <div className="footer-logo">🚲 <strong>Bike House</strong></div>
+            <p className="footer-tagline">Твій велосипедний партнер</p>
+            <p className="footer-desc">Оренда та продаж велосипедів для будь-якого маршруту.</p>
+          </div>
+          <div className="footer-col">
+            <div className="footer-col-title">Навігація</div>
+            <button className="footer-link" onClick={scrollToAbout}>Про нас</button>
+            <button className="footer-link" onClick={scrollToTypes}>Типи велосипедів</button>
+            <button className="footer-link" onClick={scrollToCatalog}>Каталог</button>
+          </div>
+          <div className="footer-col">
+            <div className="footer-col-title">Розробнику</div>
+            <a className="footer-link" href="/docs" target="_blank" rel="noreferrer">API Документація</a>
+            <a className="footer-link" href="/redoc" target="_blank" rel="noreferrer">ReDoc</a>
+          </div>
+          <div className="footer-col">
+            <div className="footer-col-title">Контакти</div>
+            <span className="footer-link">📧 info@bikehouse.ua</span>
+            <span className="footer-link">📞 +380 XX XXX XX XX</span>
+            <span className="footer-link">📍 Київ, Україна</span>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>© 2025 <strong>Bike House</strong> — Усі права захищено</p>
+        </div>
       </footer>
 
       <AuthModal
