@@ -2,7 +2,58 @@
 
 Повноцінний веб-додаток для каталогу велосипедів з JWT-аутентифікацією, REST API та сучасним темним інтерфейсом.
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/zakkfor/API-project)
+
 ---
+
+## 🚀 Швидкий старт (оберіть зручний спосіб)
+
+### 🌐 Варіант 1 — GitHub Codespaces (прямо в браузері, без встановлення)
+
+> Натисніть кнопку — і проект відкриється прямо у браузері через VS Code в хмарі GitHub.  
+> Нічого встановлювати не потрібно!
+
+1. Натисніть кнопку **"Open in GitHub Codespaces"** вгорі
+2. Зачекайте ~1-2 хвилини поки все встановиться
+3. Браузер автоматично відкриє сайт на порту **8000**
+
+---
+
+### 🐳 Варіант 2 — Docker (найпростіший локальний запуск)
+
+> Потрібен встановлений [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+```bash
+git clone https://github.com/zakkfor/API-project.git
+cd API-project
+docker compose up
+```
+
+Відкрийте **http://localhost:8000** у браузері. Готово! 🎉
+
+---
+
+### ⚡ Варіант 3 — Скрипт одним кліком
+
+**Linux / macOS:**
+```bash
+git clone https://github.com/zakkfor/API-project.git
+cd API-project
+bash start.sh
+```
+
+**Windows** — двічі клікніть на файл `start.bat` або:
+```
+start.bat
+```
+
+Скрипт автоматично створить virtualenv, встановить залежності та запустить сервер.
+
+---
+
+### 🔧 Варіант 4 — Вручну (повний контроль)
+
+
 
 ## 🖼️ Вигляд сайту
 
@@ -30,7 +81,7 @@
 
 ---
 
-## 🚀 Запуск проекту
+## 🚀 Запуск проекту (детальна інструкція)
 
 ### 1. Клонування репозиторію
 
@@ -122,9 +173,14 @@ API-project/
 │           ├── users.py           # /users/
 │           └── bicycles.py        # /bicycles/
 ├── static/
-│   └── index.html                 # Bike House SPA (HTML + CSS + JS)
-├── docs/
-│   └── screenshots/               # Скріншоти інтерфейсу
+│   ├── index.html                 # Bike House SPA (HTML + CSS + JS)
+│   └── bikes/                     # SVG-ілюстрації велосипедів
+├── .devcontainer/
+│   └── devcontainer.json          # GitHub Codespaces конфігурація
+├── Dockerfile                     # Docker образ
+├── docker-compose.yml             # Docker Compose (один командний запуск)
+├── start.sh                       # Скрипт запуску Linux/macOS
+├── start.bat                      # Скрипт запуску Windows
 ├── requirements.txt
 ├── .env.example
 └── README.md

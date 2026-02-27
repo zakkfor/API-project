@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - bike-data:/app
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-change-this-to-a-random-secret-key}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./app.db}
+      - SEED_USER_PASSWORD=${SEED_USER_PASSWORD:-BikeHouse2025!}
+    restart: unless-stopped
+
+volumes:
+  bike-data:

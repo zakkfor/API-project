@@ -1,0 +1,25 @@
+{
+  "name": "Bike House",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" }
+  },
+  "postCreateCommand": "pip install -r requirements.txt && cd frontend && npm install && npm run build",
+  "postStartCommand": "cp -n .env.example .env 2>/dev/null || true ; uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload > /tmp/bikehouse.log 2>&1 &",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "🚲 Bike House",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
