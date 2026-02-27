@@ -46,3 +46,4 @@ htmlcov/
 dmypy.json
 *.log
 /tmp/server.log
+static/uploads/

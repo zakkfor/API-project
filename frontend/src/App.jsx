@@ -3,6 +3,8 @@ import { getMe, getBicycles, deleteBicycle, removeToken } from './api'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import StatsBar from './components/StatsBar'
+import FeaturesSection from './components/FeaturesSection'
+import TypesSection from './components/TypesSection'
 import BikeGrid from './components/BikeGrid'
 import AuthModal from './components/AuthModal'
 import BikeModal from './components/BikeModal'
@@ -66,6 +68,14 @@ export default function App() {
     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  function scrollToAbout() {
+    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  function scrollToTypes() {
+    document.getElementById('types')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   function handleLogin(token) {
     loadUser().then(() => {
       loadBikes()
@@ -122,6 +132,8 @@ export default function App() {
       <Navbar
         user={user}
         onCatalog={scrollToCatalog}
+        onAbout={scrollToAbout}
+        onTypes={scrollToTypes}
         onAuth={() => setModal('auth')}
         onAddBike={openAddBike}
         onLogout={handleLogout}
@@ -129,10 +141,13 @@ export default function App() {
       <Hero
         user={user}
         onCatalog={scrollToCatalog}
+        onAbout={scrollToAbout}
         onAddBike={openAddBike}
         onAuth={() => setModal('auth')}
       />
       <StatsBar total={totalBikes} available={availBikes} />
+      <FeaturesSection />
+      <TypesSection onFilterChange={setFilter} onCatalog={scrollToCatalog} />
       <BikeGrid
         bikes={bikes}
         loading={loading}

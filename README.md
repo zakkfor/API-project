@@ -6,14 +6,14 @@
 
 ## 🖼️ Вигляд сайту
 
-### Головна сторінка — каталог велосипедів
-![Каталог велосипедів](https://github.com/user-attachments/assets/1149101e-c280-4540-97de-5d01b9b1ec97)
+### Hero — початкова сторінка
+![Hero](https://github.com/user-attachments/assets/0abc6868-1049-456f-986d-ff536e3cfa66)
 
-### Авторизація користувача
-![Авторизація](https://github.com/user-attachments/assets/0563b04b-664f-4d70-98dd-3f9cc35616bc)
+### Секція «Чому Bike House?» + типи велосипедів
+![Features & Types](https://github.com/user-attachments/assets/2ea4ed5a-af54-4f55-9f1c-f14a19bd49ed)
 
-### Деталі велосипеда
-![Деталі велосипеда](https://github.com/user-attachments/assets/0aa8ca0a-f903-4a4b-aa27-8b13ce5b66ab)
+### Форма додавання велосипеда з upload фото
+![Додати велосипед](https://github.com/user-attachments/assets/f8bf6c14-bc6d-4868-b1c4-fd24cd70698e)
 
 ---
 

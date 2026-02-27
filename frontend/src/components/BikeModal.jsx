@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { createBicycle, updateBicycle } from '../api'
+import { useState, useEffect, useRef } from 'react'
+import { createBicycle, updateBicycle, uploadImage } from '../api'
 
 const EMPTY = { name: '', brand: '', model: '', type: '', price_per_hour: '', description: '', is_available: true, image_url: '' }
 
@@ -7,11 +7,15 @@ export default function BikeModal({ open, bike, onClose, onSaved }) {
   const [form, setForm] = useState(EMPTY)
   const [alert, setAlert] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [preview, setPreview] = useState(null)
+  const fileRef = useRef(null)
   const isEdit = !!bike
 
   useEffect(() => {
     if (open) {
       setAlert(null)
+      setPreview(null)
       setForm(bike ? {
         name: bike.name,
         brand: bike.brand,
@@ -31,6 +35,22 @@ export default function BikeModal({ open, bike, onClose, onSaved }) {
 
   function set(field) {
     return e => setForm(f => ({ ...f, [field]: e.target.value }))
+  }
+
+  async function handleFileChange(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPreview(URL.createObjectURL(file))
+    setUploading(true)
+    setAlert(null)
+    const res = await uploadImage(file)
+    setUploading(false)
+    if (res.ok) {
+      setForm(f => ({ ...f, image_url: res.data.url }))
+    } else {
+      setAlert({ msg: res.data?.detail || 'Помилка завантаження фото', error: true })
+      setPreview(null)
+    }
   }
 
   async function handleSubmit(e) {
@@ -60,6 +80,8 @@ export default function BikeModal({ open, bike, onClose, onSaved }) {
       setAlert({ msg: res.data?.detail || 'Помилка збереження', error: true })
     }
   }
+
+  const imgSrc = preview || (form.image_url ? form.image_url : null)
 
   return (
     <div className={`modal-overlay${open ? ' open' : ''}`} onClick={handleOverlay}>
@@ -114,16 +136,39 @@ export default function BikeModal({ open, bike, onClose, onSaved }) {
               </div>
             </div>
             <div className="form-group">
-              <label className="form-label">URL зображення</label>
-              <input className="form-control" placeholder="https://..." value={form.image_url} onChange={set('image_url')} />
+              <label className="form-label">Фото велосипеда</label>
+              <div className="upload-area" onClick={() => fileRef.current?.click()}>
+                {imgSrc ? (
+                  <img src={imgSrc} alt="preview" className="upload-preview" />
+                ) : (
+                  <div className="upload-placeholder">
+                    <span>📷</span>
+                    <span>{uploading ? 'Завантаження...' : 'Натисніть або перетягніть фото'}</span>
+                    <span className="upload-hint">JPEG, PNG, WebP, GIF — до 5 МБ</span>
+                  </div>
+                )}
+                {uploading && <div className="upload-overlay"><div className="spinner" style={{ margin: 0 }} /></div>}
+              </div>
+              <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+              {imgSrc && !uploading && (
+                <button type="button" className="upload-remove"
+                  onClick={() => { setPreview(null); setForm(f => ({ ...f, image_url: '' })); if (fileRef.current) fileRef.current.value = '' }}>
+                  ✕ Видалити фото
+                </button>
+              )}
+            </div>
+            <div className="form-group">
+              <label className="form-label">Або вставте URL зображення</label>
+              <input className="form-control" placeholder="https://..." value={form.image_url} onChange={set('image_url')}
+                onFocus={() => { if (preview) { setPreview(null); if (fileRef.current) fileRef.current.value = '' } }} />
             </div>
             <div className="form-group">
               <label className="form-label">Опис</label>
               <textarea className="form-control" placeholder="Розкажіть про велосипед..." rows="3"
                 style={{ resize: 'vertical' }} value={form.description} onChange={set('description')} />
             </div>
-            <button className="form-submit" type="submit" disabled={loading}>
-              {isEdit ? 'Зберегти зміни' : 'Додати велосипед'}
+            <button className="form-submit" type="submit" disabled={loading || uploading}>
+              {uploading ? 'Завантаження фото...' : loading ? 'Збереження...' : isEdit ? 'Зберегти зміни' : 'Додати велосипед'}
             </button>
           </form>
         </div>

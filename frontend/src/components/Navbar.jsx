@@ -1,10 +1,12 @@
-export default function Navbar({ user, onCatalog, onAuth, onAddBike, onLogout }) {
+export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAddBike, onLogout }) {
   return (
     <nav>
       <button className="nav-logo" onClick={onCatalog}>
         🚲 <span>Bike</span>House
       </button>
       <div className="nav-links">
+        <button onClick={onAbout}>Про нас</button>
+        <button onClick={onTypes}>Типи</button>
         <button onClick={onCatalog}>Каталог</button>
         {user ? (
           <>

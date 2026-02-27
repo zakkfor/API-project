@@ -15,7 +15,7 @@ async function apiFetch(path, options = {}) {
 
 export async function login(username, password) {
   const body = new URLSearchParams({ username, password })
-  const res = await fetch(`${BASE}/auth/login`, {
+  const res = await fetch(`${BASE}/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body,
@@ -25,14 +25,14 @@ export async function login(username, password) {
 }
 
 export async function register(username, email, password) {
-  return apiFetch('/auth/register', {
+  return apiFetch('/register', {
     method: 'POST',
     body: JSON.stringify({ username, email, password }),
   })
 }
 
 export async function getMe() {
-  return apiFetch('/users/me')
+  return apiFetch('/me')
 }
 
 export async function getBicycles(params = {}) {
@@ -45,6 +45,19 @@ export async function getBicycles(params = {}) {
 
 export async function getBicycle(id) {
   return apiFetch(`/bicycles/${id}`)
+}
+
+export async function uploadImage(file) {
+  const token = getToken()
+  const formData = new FormData()
+  formData.append('file', file)
+  const res = await fetch(`${BASE}/upload/image`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  })
+  const data = await res.json().catch(() => null)
+  return { ok: res.ok, data }
 }
 
 export async function createBicycle(data) {
