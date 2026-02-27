@@ -22,7 +22,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=85.0,
         description="Надійний гірський велосипед для трейлів і позашляхового катання. Алюмінієва рама, 29-дюймові колеса, гідравлічні дискові гальма.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/mountain.svg",
     ),
     BicycleCreate(
         name="Giant Escape 3",
@@ -32,7 +32,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=55.0,
         description="Легкий міський гібрид для щоденних поїздок. Зручна посадка, крила та багажник у комплекті.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/city.svg",
     ),
     BicycleCreate(
         name="Specialized Allez",
@@ -42,7 +42,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=120.0,
         description="Класичне шосейне шасі з алюмінієвою рамою та карбоновою вилкою. Shimano Claris 16 швидкостей.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/road.svg",
     ),
     BicycleCreate(
         name="Mongoose Title Pro",
@@ -52,7 +52,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=40.0,
         description="Професійний BMX для скейт-парків та вуличних трюків. Хроммолібденова рама, сталеві пеги.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/bmx.svg",
     ),
     BicycleCreate(
         name="Cannondale Quick Neo",
@@ -62,7 +62,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=150.0,
         description="Швидкий електричний гібрид з мотором Bosch. Запас ходу до 100 км, заряджається за 4 години.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/electric.svg",
     ),
     BicycleCreate(
         name="Scott Aspect 950",
@@ -72,7 +72,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=70.0,
         description="Доступний гірський велосипед для початківців. 27,5 дюйма, 21 передача, механічні дискові гальма.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/mountain.svg",
     ),
     BicycleCreate(
         name="Merida Crossway 100",
@@ -82,7 +82,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=50.0,
         description="Універсальний кросовий велосипед для асфальту та ґрунтових доріжок. Shimano Tourney 21 ск.",
         is_available=False,
-        image_url=None,
+        image_url="/static/bikes/city.svg",
     ),
     BicycleCreate(
         name="Trek Émonda ALR 5",
@@ -92,7 +92,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=140.0,
         description="Легке шосейне рішення для тривалих поїздок. Алюмінієва рама з карбоновою вилкою, Shimano 105.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/road.svg",
     ),
     BicycleCreate(
         name="Haibike AllMtn 3",
@@ -102,7 +102,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=175.0,
         description="Електричний гірський байк з мотором Yamaha PW-X3. Ідеальний для екстремальних спусків.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/electric.svg",
     ),
     BicycleCreate(
         name="Colony Premise",
@@ -112,7 +112,7 @@ SEED_BIKES: list[BicycleCreate] = [
         price_per_hour=35.0,
         description="Street BMX для фрістайлу. Цільнозварена хром-молі рама, 4-стояковий руль.",
         is_available=True,
-        image_url=None,
+        image_url="/static/bikes/bmx.svg",
     ),
 ]
 
