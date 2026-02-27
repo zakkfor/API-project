@@ -7,13 +7,13 @@
 ## 🖼️ Вигляд сайту
 
 ### Головна сторінка — каталог велосипедів
-![Каталог велосипедів](docs/screenshots/01-catalog.png)
+![Каталог велосипедів](https://github.com/user-attachments/assets/1149101e-c280-4540-97de-5d01b9b1ec97)
 
 ### Авторизація користувача
-![Авторизація](https://github.com/user-attachments/assets/a6d68f9f-bbff-44d2-8a19-c8654e9aae04)
+![Авторизація](https://github.com/user-attachments/assets/0563b04b-664f-4d70-98dd-3f9cc35616bc)
 
-### Форма додавання велосипеда
-![Додати велосипед](https://github.com/user-attachments/assets/4131e1f0-edfb-4fd8-942b-cd071662a64a)
+### Деталі велосипеда
+![Деталі велосипеда](https://github.com/user-attachments/assets/0aa8ca0a-f903-4a4b-aa27-8b13ce5b66ab)
 
 ---
 
