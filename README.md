@@ -47,7 +47,31 @@
 
 ---
 
-### ☁️ Варіант C — Fly.io (продвинутий, найшвидший)
+### 🔺 Варіант C — Netlify (тільки frontend) + Railway/Render (backend)
+
+> Netlify хостить лише **статичні файли**, тому backend (FastAPI) потрібно задеплоїти окремо.
+
+**Крок 1 — задеплойте backend на Railway або Render** (варіант A або B вище)  
+Отримайте публічний URL, наприклад `https://your-backend.up.railway.app`
+
+**Крок 2 — задеплойте frontend на Netlify:**
+
+1. Зайдіть на **[netlify.com](https://app.netlify.com/)** → **"Add new site"** → **"Import an existing project"**
+2. Підключіть GitHub → оберіть репозиторій `API-project`
+3. Netlify автоматично знайде `netlify.toml` і налаштує збірку ✅
+4. Перейдіть в **Site configuration → Environment variables** → натисніть **"Add a variable"**
+
+   | Ім'я змінної | Значення |
+   |--------------|----------|
+   | `VITE_API_URL` | `https://your-backend.up.railway.app` |
+
+5. Натисніть **"Deploy site"** — через ~2 хвилини отримаєте посилання виду `https://bike-house.netlify.app` 🎉
+
+> **Безкоштовний план:** необмежений трафік для статичних сайтів.
+
+---
+
+### ☁️ Варіант D — Fly.io (продвинутий, найшвидший)
 
 ```bash
 # Встановіть flyctl
@@ -242,6 +266,7 @@ API-project/
 ├── docker-compose.yml             # Docker Compose (один командний запуск)
 ├── railway.toml                   # Railway deployment config
 ├── render.yaml                    # Render deployment config
+├── netlify.toml                   # Netlify deployment config (тільки frontend)
 ├── start.sh                       # Скрипт запуску Linux/macOS
 ├── start.bat                      # Скрипт запуску Windows
 ├── requirements.txt
