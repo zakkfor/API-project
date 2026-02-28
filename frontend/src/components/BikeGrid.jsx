@@ -10,6 +10,7 @@ const FILTERS = [
 ]
 
 export default function BikeGrid({ bikes, loading, filter, availableOnly, user, onFilterChange, onAvailableChange, onDetail, onEdit, onDelete }) {
+  const bikeList = bikes ?? []
   return (
     <div className="section" id="catalog">
       <div className="section-title">🚵 Каталог велосипедів</div>
@@ -34,13 +35,13 @@ export default function BikeGrid({ bikes, loading, filter, availableOnly, user, 
           <div style={{ gridColumn: '1/-1', display: 'flex', justifyContent: 'center' }}>
             <div className="spinner" />
           </div>
-        ) : bikes.length === 0 ? (
+        ) : bikeList.length === 0 ? (
           <div className="empty-state">
             <span>🚲</span>
             Велосипедів не знайдено.<br />Будьте першим — додайте свій!
           </div>
         ) : (
-          bikes.map(bike => (
+          bikeList.map(bike => (
             <BikeCard
               key={bike.id}
               bike={bike}

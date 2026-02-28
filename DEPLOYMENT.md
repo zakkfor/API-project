@@ -174,6 +174,7 @@ https://api-project-production-xxxx.up.railway.app
 | Симптом | Причина | Рішення |
 |---|---|---|
 | `Healthcheck failed` на Railway | Застосунок не стартує протягом 60с | Перевір Variables — чи є `SECRET_KEY` |
+| Сайт відкривається на секунду, потім зникає (біла сторінка) | `VITE_API_URL` не встановлено → Netlify повертає HTML (200) замість JSON → React крашиться | Встанови `VITE_API_URL` (крок 2.3) і зроби **Trigger deploy**. Діагностика: F12 → Console — буде `TypeError`. |
 | Порожній список велосипедів | `VITE_API_URL` не встановлено або неправильний | Перевір Variables на Netlify та зроби Redeploy |
 | `CORS error` в консолі браузера | Домен Netlify не дозволений | Додай `ALLOWED_ORIGINS` на Railway |
 | `404` на Netlify при refresh | SPA fallback не працює | Переконайся, що `netlify.toml` є в репозиторії |

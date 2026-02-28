@@ -44,10 +44,10 @@ export default function App() {
     setLoading(true)
     const res = await getBicycles({ type: filter, available_only: availableOnly, limit: 200 })
     setLoading(false)
-    if (res.ok) setBikes(res.data)
+    if (res.ok) setBikes(res.data ?? [])
     // also load all bikes for stats
     const all = await getBicycles({ limit: 1000 })
-    if (all.ok) setAllBikes(all.data)
+    if (all.ok) setAllBikes(all.data ?? [])
   }, [filter, availableOnly])
 
   useEffect(() => {
