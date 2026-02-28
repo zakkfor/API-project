@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAddBike, onProfile, onLogout }) {
   const [open, setOpen] = useState(false)
@@ -8,6 +8,19 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
   function handle(fn) {
     return () => { fn(); close() }
   }
+
+  // Lock body scroll while the mobile drawer is open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  // Close drawer when viewport becomes wide enough (orientation change)
+  useEffect(() => {
+    function onResize() { if (window.innerWidth > 768) close() }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   return (
     <>
