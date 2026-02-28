@@ -161,6 +161,7 @@ export default function App() {
         onAbout={scrollToAbout}
         onAddBike={openAddBike}
         onAuth={() => setModal('auth')}
+        onRent={scrollToCatalog}
       />
       <StatsBar total={totalBikes} available={availBikes} />
       <FeaturesSection />

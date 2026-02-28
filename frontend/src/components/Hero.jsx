@@ -1,4 +1,4 @@
-export default function Hero({ user, onCatalog, onAbout, onAddBike, onAuth }) {
+export default function Hero({ user, onCatalog, onAbout, onAddBike, onAuth, onRent }) {
   return (
     <section className="hero">
       <div className="hero-bg-shapes">
@@ -26,8 +26,8 @@ export default function Hero({ user, onCatalog, onAbout, onAddBike, onAuth }) {
           <span>🔍</span> Переглянути каталог
         </button>
         {user ? (
-          <button className="btn btn-ghost btn-hero" onClick={onAddBike}>
-            <span>+</span> Додати велосипед
+          <button className="btn btn-ghost btn-hero" onClick={onRent}>
+            <span>🚲</span> Орендувати велосипед
           </button>
         ) : (
           <button className="btn btn-ghost btn-hero" onClick={onAuth}>
