@@ -7,7 +7,7 @@ export default function BikeCard({ bike, user, onDetail, onEdit, onDelete, onRen
   const emoji = TYPE_EMOJI[bike.type] || '🚲'
   const label = TYPE_LABEL[bike.type] || bike.type
   const canEdit = user && (user.id === bike.owner_id || user.is_superuser)
-  const canRent = user && !user.is_superuser && bike.is_available
+  const canRent = user && bike.is_available
 
   return (
     <div className="bike-card" onClick={() => onDetail(bike)}>

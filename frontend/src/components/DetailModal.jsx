@@ -6,7 +6,7 @@ export default function DetailModal({ open, bike, user, onClose, onEdit, onDelet
   const emoji = TYPE_EMOJI[bike.type] || '🚲'
   const label = TYPE_LABEL[bike.type] || bike.type
   const canEdit = user && (user.id === bike.owner_id || user.is_superuser)
-  const canRent = user && !user.is_superuser && bike.is_available
+  const canRent = user && bike.is_available
 
   function handleOverlay(e) {
     if (e.target === e.currentTarget) onClose()
