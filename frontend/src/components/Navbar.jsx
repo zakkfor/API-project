@@ -17,7 +17,7 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
 
   // Close drawer when viewport becomes wide enough (orientation change)
   useEffect(() => {
-    function onResize() { if (window.innerWidth > 900) close() }
+    function onResize() { if (window.innerWidth > 768) close() }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
