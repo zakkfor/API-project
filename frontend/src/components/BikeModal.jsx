@@ -117,7 +117,7 @@ export default function BikeModal({ open, bike, onClose, onSaved }) {
                   <option value="road">🛣️ Шосейний</option>
                   <option value="bmx">🤸 BMX</option>
                   <option value="electric">⚡ Електричний</option>
-                  <option value="gravel">🪨 Гравійний</option>
+                  <option value="gravel">🪨 Gravel</option>
                 </select>
               </div>
             </div>

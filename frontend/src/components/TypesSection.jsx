@@ -4,7 +4,7 @@ const TYPES = [
   { key: 'road',     emoji: '🛣️', label: 'Шосейні', desc: 'Швидкість та аеродинаміка' },
   { key: 'bmx',      emoji: '🤸', label: 'BMX',     desc: 'Трюки та активне катання' },
   { key: 'electric', emoji: '⚡', label: 'Електро',  desc: 'Сучасні e-байки для міста і гір' },
-  { key: 'gravel',   emoji: '🪨', label: 'Гравійні', desc: 'Універсальні велосипеди для будь-яких доріг' },
+  { key: 'gravel',   emoji: '🪨', label: 'Gravel', desc: 'Універсальні велосипеди для будь-яких доріг' },
 ]
 
 export default function TypesSection({ onFilterChange, onCatalog }) {

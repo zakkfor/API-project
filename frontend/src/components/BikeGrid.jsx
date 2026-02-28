@@ -7,7 +7,7 @@ const FILTERS = [
   { value: 'road', label: '🛣️ Шосейні' },
   { value: 'bmx', label: '🤸 BMX' },
   { value: 'electric', label: '⚡ Електричні' },
-  { value: 'gravel', label: '🪨 Гравійні' },
+  { value: 'gravel', label: '🪨 Gravel' },
 ]
 
 export default function BikeGrid({ bikes, loading, filter, availableOnly, user, onFilterChange, onAvailableChange, onDetail, onEdit, onDelete, onRent }) {
