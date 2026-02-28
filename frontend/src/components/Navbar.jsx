@@ -10,8 +10,8 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
         <button onClick={onCatalog}>Каталог</button>
         {user ? (
           <>
-            <span className="nav-username">👤 {user.username}</span>
-            <button onClick={onAddBike}>+ Додати велосипед</button>
+            <span className="nav-username">👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</span>
+            {user.is_superuser && <button onClick={onAddBike}>+ Додати велосипед</button>}
             <button className="btn-outline" onClick={onLogout}>Вийти</button>
           </>
         ) : (

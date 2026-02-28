@@ -6,12 +6,19 @@ import logging
 
 from app.config import settings
 from app.database import SessionLocal
-from app.crud.user import get_user_by_username, create_user
+from app.crud.user import get_user_by_username, create_user, create_admin_user
 from app.crud.bicycle import get_bicycles, create_bicycle
 from app.schemas.user import UserCreate
 from app.schemas.bicycle import BicycleCreate
 
 logger = logging.getLogger(__name__)
+
+# Адміністратори, яким дозволено додавати та видаляти велосипеди
+ADMIN_USERS = [
+    {"username": "alex123",   "email": "alex123@bikehouse.ua",   "password": "123456"},
+    {"username": "alex12345", "email": "alex12345@bikehouse.ua", "password": "qwertyu"},
+    {"username": "max",       "email": "max@bikehouse.ua",       "password": "123456"},
+]
 
 SEED_BIKES: list[BicycleCreate] = [
     BicycleCreate(
@@ -121,21 +128,31 @@ def seed_db() -> None:
     """Заповнює БД тестовими даними, якщо вона порожня."""
     db = SessionLocal()
     try:
-        if get_bicycles(db, limit=1):
-            return  # дані вже є
+        # Завжди переконуємось, що адміністратори існують
+        for admin in ADMIN_USERS:
+            if not get_user_by_username(db, admin["username"]):
+                create_admin_user(
+                    db,
+                    UserCreate(
+                        username=admin["username"],
+                        email=admin["email"],
+                        password=admin["password"],
+                    ),
+                )
+                logger.info("Admin user created: %s", admin["username"])
 
-        # Створити системного користувача (або взяти існуючого)
-        user = get_user_by_username(db, "bikehouse")
-        if not user:
-            seed_user = UserCreate(
-                username="bikehouse",
-                email="bikehouse@example.com",
-                password=settings.SEED_USER_PASSWORD,
-            )
-            user = create_user(db, seed_user)
+        # Велосипеди сідуємо тільки якщо їх ще немає
+        if get_bicycles(db, limit=1):
+            return
+
+        # Власником демо-велосипедів є перший адмін
+        owner = get_user_by_username(db, "alex123")
+        if not owner:
+            logger.warning("Admin user 'alex123' not found, skipping bike seed.")
+            return
 
         for bike_data in SEED_BIKES:
-            create_bicycle(db, bike_data, owner_id=user.id)
+            create_bicycle(db, bike_data, owner_id=owner.id)
 
         db.commit()
         logger.info("Seed data: %d bicycles added.", len(SEED_BIKES))

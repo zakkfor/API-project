@@ -95,6 +95,7 @@ export default function App() {
 
   function openAddBike() {
     if (!user) { setModal('auth'); return }
+    if (!user.is_superuser) { addToast('Тільки адміністратори можуть додавати велосипеди', true); return }
     setSelectedBike(null)
     setModal('addBike')
   }

@@ -30,6 +30,21 @@ def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[User]:
     return db.query(User).offset(skip).limit(limit).all()
 
 
+def create_admin_user(db: Session, user: UserCreate) -> User:
+    """Створення адміністратора (is_superuser=True)"""
+    hashed_password = get_password_hash(user.password)
+    db_user = User(
+        email=user.email,
+        username=user.username,
+        hashed_password=hashed_password,
+        is_superuser=True,
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def create_user(db: Session, user: UserCreate) -> User:
     """Створення нового користувача"""
     hashed_password = get_password_hash(user.password)

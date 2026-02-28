@@ -34,7 +34,9 @@ async def add_bicycle(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_active_user),
 ):
-    """Додавання нового велосипеда (потрібна авторизація)"""
+    """Додавання нового велосипеда (тільки адміністратори)"""
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Only admins can add bicycles")
     return create_bicycle(db, bicycle_in, owner_id=current_user.id)
 
 
@@ -57,12 +59,12 @@ async def update_bicycle_endpoint(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_active_user),
 ):
-    """Оновлення велосипеда (тільки власник або superuser)"""
+    """Оновлення велосипеда (тільки адміністратори)"""
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Only admins can edit bicycles")
     bicycle = get_bicycle(db, bicycle_id)
     if not bicycle:
         raise HTTPException(status_code=404, detail="Bicycle not found")
-    if bicycle.owner_id != current_user.id and not current_user.is_superuser:
-        raise HTTPException(status_code=403, detail="Not enough permissions")
     return update_bicycle(db, bicycle_id, bicycle_update)
 
 
@@ -72,10 +74,10 @@ async def delete_bicycle_endpoint(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_active_user),
 ):
-    """Видалення велосипеда (тільки власник або superuser)"""
+    """Видалення велосипеда (тільки адміністратори)"""
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Only admins can delete bicycles")
     bicycle = get_bicycle(db, bicycle_id)
     if not bicycle:
         raise HTTPException(status_code=404, detail="Bicycle not found")
-    if bicycle.owner_id != current_user.id and not current_user.is_superuser:
-        raise HTTPException(status_code=403, detail="Not enough permissions")
     return delete_bicycle(db, bicycle_id)
