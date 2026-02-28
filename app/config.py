@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     """Налаштування проекту"""
     PROJECT_NAME: str = "Bike House"
     API_V1_STR: str = "/api/v1"
-    DATABASE_URL: str = "sqlite:///./app.db"
+    DATABASE_URL: str = "sqlite:////data/app.db"
     SECRET_KEY: str = "change-this-to-a-random-secret-key"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30

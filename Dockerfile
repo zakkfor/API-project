@@ -14,6 +14,11 @@ COPY static/ ./static/
 # Copy env example as default env (override at runtime)
 COPY .env.example .env
 
+# Persistent data directory — mount a volume here so the SQLite DB
+# (and any uploaded files) survive container restarts and redeployments.
+RUN mkdir -p /data
+VOLUME /data
+
 # PORT env var — Railway / Render inject it at runtime; default to 8000
 ENV PORT=8000
 

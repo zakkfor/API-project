@@ -11,8 +11,8 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:///./app.db
+        value: sqlite:////data/app.db
     disk:
       name: bike-data
-      mountPath: /app
+      mountPath: /data
       sizeGB: 1
