@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -15,19 +16,32 @@ from app.seed import seed_db
 logger = logging.getLogger(__name__)
 
 
-@asynccontextmanager
-async def lifespan(application: FastAPI):
-    """Run database setup once uvicorn has bound to the port."""
+async def _init_db() -> None:
+    """Initialise schema and seed data in a thread so the event loop is not blocked."""
     try:
-        Base.metadata.create_all(bind=engine)
+        await asyncio.to_thread(Base.metadata.create_all, engine)
     except Exception:
         logger.exception("Failed to create database tables — app will start without a schema.")
-    else:
-        try:
-            seed_db()
-        except Exception:
-            logger.exception("Failed to seed database — app will start without seed data.")
-    yield
+        return
+    try:
+        await asyncio.to_thread(seed_db)
+    except Exception:
+        logger.exception("Failed to seed database — app will start without seed data.")
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    """Fire DB init as a background task so uvicorn can start serving immediately."""
+    task = asyncio.create_task(_init_db())
+    try:
+        yield
+    finally:
+        if not task.done():
+            task.cancel()
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
 
 
 app = FastAPI(
