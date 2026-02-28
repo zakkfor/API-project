@@ -7,6 +7,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code and pre-built frontend
+COPY run.py .
 COPY app/ ./app/
 COPY static/ ./static/
 
@@ -18,4 +19,4 @@ ENV PORT=8000
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["python", "run.py"]
