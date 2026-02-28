@@ -13,12 +13,23 @@ from app.schemas.bicycle import BicycleCreate
 
 logger = logging.getLogger(__name__)
 
-# Адміністратори, яким дозволено додавати та видаляти велосипеди
-ADMIN_USERS = [
-    {"username": "alex123",   "email": "alex123@bikehouse.ua",   "password": "123456"},
-    {"username": "alex12345", "email": "alex12345@bikehouse.ua", "password": "qwertyu"},
-    {"username": "max",       "email": "max@bikehouse.ua",       "password": "123456"},
-]
+# Адміністратори, яким дозволено додавати та видаляти велосипеди.
+# Список читається з env-змінної ADMIN_CREDENTIALS (формат: "user:pass,user2:pass2").
+def _parse_admin_users() -> list[dict]:
+    admins = []
+    for entry in settings.ADMIN_CREDENTIALS.split(","):
+        entry = entry.strip()
+        if ":" not in entry:
+            logger.warning("Skipping malformed ADMIN_CREDENTIALS entry (expected 'username:password'): %r", entry)
+            continue
+        username, password = entry.split(":", 1)
+        username = username.strip()
+        admins.append({
+            "username": username,
+            "email": f"{username}@bikehouse.ua",
+            "password": password.strip(),
+        })
+    return admins
 
 SEED_BIKES: list[BicycleCreate] = [
     BicycleCreate(
@@ -128,8 +139,10 @@ def seed_db() -> None:
     """Заповнює БД тестовими даними, якщо вона порожня."""
     db = SessionLocal()
     try:
+        admin_users = _parse_admin_users()
+
         # Завжди переконуємось, що адміністратори існують
-        for admin in ADMIN_USERS:
+        for admin in admin_users:
             if not get_user_by_username(db, admin["username"]):
                 create_admin_user(
                     db,
@@ -145,10 +158,14 @@ def seed_db() -> None:
         if get_bicycles(db, limit=1):
             return
 
-        # Власником демо-велосипедів є перший адмін
-        owner = get_user_by_username(db, "alex123")
+        # Власником демо-велосипедів є перший адмін зі списку
+        first_admin = admin_users[0]["username"] if admin_users else None
+        owner = get_user_by_username(db, first_admin) if first_admin else None
         if not owner:
-            logger.warning("Admin user 'alex123' not found, skipping bike seed.")
+            logger.error(
+                "No admin user found (ADMIN_CREDENTIALS may be empty or malformed). "
+                "Demo bicycles will not be seeded."
+            )
             return
 
         for bike_data in SEED_BIKES:

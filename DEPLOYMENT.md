@@ -20,7 +20,7 @@
 | Ім'я змінної | Значення |
 |---|---|
 | `SECRET_KEY` | будь-який довгий випадковий рядок (≥ 32 символи), наприклад згенерований на [randomkeygen.com](https://randomkeygen.com) |
-| `SEED_USER_PASSWORD` | пароль для тестового адміна (наприклад `BikeHouse2025!`) |
+| `ADMIN_CREDENTIALS` | список адмінів у форматі `username:password,username2:password2` (наприклад `alex123:123456,alex12345:qwertyu,max:123456`) |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | `30` |
 | `DATABASE_URL` | *(не потрібно — SQLite за замовчуванням)* |
 
