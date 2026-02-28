@@ -178,19 +178,14 @@ export default function App() {
             <button className="footer-link" onClick={scrollToCatalog}>Каталог</button>
           </div>
           <div className="footer-col">
-            <div className="footer-col-title">Розробнику</div>
-            <a className="footer-link" href="/docs" target="_blank" rel="noreferrer">API Документація</a>
-            <a className="footer-link" href="/redoc" target="_blank" rel="noreferrer">ReDoc</a>
-          </div>
-          <div className="footer-col">
             <div className="footer-col-title">Контакти</div>
             <span className="footer-link">📧 info@bikehouse.ua</span>
             <span className="footer-link">📞 +380 XX XXX XX XX</span>
-            <span className="footer-link">📍 Київ, Україна</span>
+            <span className="footer-link">📍 Вінниця, Україна</span>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2025 <strong>Bike House</strong> — Усі права захищено</p>
+          <p>© 2026 <strong>Bike House</strong> — Усі права захищено</p>
         </div>
       </footer>
 
