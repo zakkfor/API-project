@@ -141,7 +141,6 @@ def seed_db() -> None:
         logger.info("Seed data: %d bicycles added.", len(SEED_BIKES))
     except Exception:
         db.rollback()
-        logger.exception("Failed to seed database.")
-        raise
+        logger.exception("Failed to seed database. App will continue without seed data.")
     finally:
         db.close()
