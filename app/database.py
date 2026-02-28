@@ -7,10 +7,16 @@ from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
 
-engine = create_engine(
-    settings.DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
+# Railway's Postgres plugin injects DATABASE_URL with the legacy "postgres://" scheme.
+# SQLAlchemy 2.x requires "postgresql://", so normalise the URL at startup.
+_db_url = settings.DATABASE_URL
+if _db_url.startswith("postgres://"):
+    _db_url = "postgresql://" + _db_url[len("postgres://"):]
+
+# check_same_thread is a SQLite-only option; omit it for other databases.
+_connect_args = {"check_same_thread": False} if _db_url.lower().startswith("sqlite") else {}
+
+engine = create_engine(_db_url, connect_args=_connect_args)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -1,3 +1,5 @@
+import logging
+from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,14 +12,30 @@ import app.models.user  # noqa: F401 — ensure models are registered
 import app.models.bicycle  # noqa: F401 — ensure models are registered
 from app.seed import seed_db
 
-Base.metadata.create_all(bind=engine)
-seed_db()
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    """Run database setup once uvicorn has bound to the port."""
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception:
+        logger.exception("Failed to create database tables — app will start without a schema.")
+    else:
+        try:
+            seed_db()
+        except Exception:
+            logger.exception("Failed to seed database — app will start without seed data.")
+    yield
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan,
 )
 
 static_path = Path(__file__).parent.parent / "static"
