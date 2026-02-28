@@ -425,7 +425,7 @@ nav {
   border: 1px solid rgba(255,255,255,.1);
 }
 .modal-overlay.open .modal { transform: translateY(0); }
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .modal-overlay {
     align-items: flex-start;
     padding: 80px 12px 24px;
@@ -615,7 +615,7 @@ footer {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav-burger { display: flex; }
   .nav-links   { display: none; }
   nav          { padding: 0 20px; }
