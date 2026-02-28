@@ -66,49 +66,65 @@ restartPolicyMaxRetries = 3
 
 ## Крок 2 — Деплой фронтенду на Netlify
 
+> **TL;DR:** Підключи GitHub-репо → вкажи одну змінну `VITE_API_URL` → натисни Deploy. Усе інше вже налаштовано автоматично через `netlify.toml`.
+
 ### 2.1 Створити акаунт і підключити репозиторій
 
-1. Відкрий [netlify.com](https://netlify.com) і увійди (GitHub).
+1. Відкрий [app.netlify.com](https://app.netlify.com) і увійди через **GitHub**.
 2. Натисни **"Add new site"** → **"Import an existing project"**.
-3. Вибери **"Deploy with GitHub"** → авторизуй → вибери **`zakkfor/API-project`**.
+3. Вибери **"Deploy with GitHub"** → авторизуй Netlify → у списку знайди і вибери **`zakkfor/API-project`**.
+4. Вибери гілку **`main`** (або ту, яку хочеш деплоїти).
 
 ### 2.2 Налаштувати параметри білду
 
-На сторінці **"Configure site and deploy"** встанови такі значення:
+На сторінці **"Configure site and deploy"** Netlify **автоматично** зчитує `netlify.toml` з кореня репозиторію і підставляє правильні значення сам:
 
-| Поле | Значення |
+| Поле | Правильне значення | Де береться |
+|---|---|---|
+| **Base directory** | `frontend` | з `netlify.toml` автоматично |
+| **Build command** | `npm ci && npm run build` | з `netlify.toml` автоматично |
+| **Publish directory** | `dist` | з `netlify.toml` автоматично |
+
+> ✅ Якщо ці поля вже заповнені правильно — нічого не чіпай і переходь одразу до кроку 2.3.
+>
+> ❌ Якщо поля порожні або неправильні — заповни їх вручну точно так, як у таблиці вище.
+
+### 2.3 Додати змінну середовища VITE_API_URL ← **обов'язковий ручний крок**
+
+Це **єдина річ, яку Netlify не може заповнити сам** — адреса твого бекенду на Railway.
+
+**Спосіб A — під час першого деплою** (рекомендований):
+
+На сторінці "Configure site and deploy" прокрути вниз до розділу **"Environment variables"** → натисни **"Add a variable"** і додай:
+
+| Ім'я змінної | Значення |
 |---|---|
-| **Base directory** | `frontend` |
-| **Build command** | `npm ci && npm run build` |
-| **Publish directory** | `frontend/dist` |
+| `VITE_API_URL` | URL бекенду з **Кроку 1.4** |
 
-> Netlify автоматично зчитує `netlify.toml` з кореня репозиторію — ці значення вже прописані там, тому поля мають заповнитися самостійно.
+**Спосіб B — після деплою**:
 
-### 2.3 Додати змінну середовища VITE_API_URL
+**Site configuration** → **Environment variables** → **"Add a variable"** → додай `VITE_API_URL` → збережи → зроби **Deploys** → **"Trigger deploy"** → **"Deploy site"** (потрібен редеплой, щоб змінна підхопилась).
 
-Це **найважливіший крок** — фронтенд повинен знати адресу твого бекенду на Railway.
-
-1. На тій же сторінці (або пізніше: **Site configuration** → **Environment variables** → **Add a variable**).
-2. Додай змінну:
-
-| Ім'я | Значення |
-|---|---|
-| `VITE_API_URL` | URL бекенду з **Кроку 1.4** (Railway → сервіс → Settings → Networking → Domain) |
-
-**Приклад значення:**
+**Приклад правильного значення:**
 ```
 https://api-project-production-xxxx.up.railway.app
 ```
 
 > ⚠️ **Без косої риски в кінці!** Тобто `https://...railway.app` — а **не** `https://...railway.app/`
 
-3. Натисни **"Deploy site"**.
+### 2.4 Задеплоїти
 
-### 2.4 Перевірити деплой
+Натисни **"Deploy site"**. Netlify:
+1. Клонує репо, перейде в папку `frontend`
+2. Виконає `npm ci && npm run build`
+3. Опублікує вміст `frontend/dist`
 
-1. Дочекайся зеленого статусу **"Published"**.
-2. Відкрий URL Netlify — наприклад `https://bike-house.netlify.app`.
-3. Перевір що сайт завантажується і список велосипедів відображається.
+### 2.5 Перевірити деплой
+
+1. Дочекайся зеленого статусу **"Published"** (зазвичай 1–2 хвилини).
+2. Клікни на URL сайту — наприклад `https://randomname.netlify.app`.
+3. ✅ Список велосипедів відображається → усе працює.
+4. ❌ Список порожній → перевір, чи правильно вказано `VITE_API_URL` (крок 2.3) і чи бекенд на Railway відповідає на `/health`.
 
 ---
 
