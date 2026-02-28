@@ -1,11 +1,12 @@
 import { TYPE_EMOJI, TYPE_LABEL } from './BikeCard'
 
-export default function DetailModal({ open, bike, user, onClose, onEdit, onDelete }) {
+export default function DetailModal({ open, bike, user, onClose, onEdit, onDelete, onRent }) {
   if (!bike) return null
 
   const emoji = TYPE_EMOJI[bike.type] || '🚲'
   const label = TYPE_LABEL[bike.type] || bike.type
   const canEdit = user && (user.id === bike.owner_id || user.is_superuser)
+  const canRent = user && !user.is_superuser && bike.is_available
 
   function handleOverlay(e) {
     if (e.target === e.currentTarget) onClose()
@@ -52,6 +53,20 @@ export default function DetailModal({ open, bike, user, onClose, onEdit, onDelet
             <span className="detail-key">Додано</span>
             <span className="detail-val">{new Date(bike.created_at).toLocaleDateString('uk-UA')}</span>
           </div>
+          {canRent && (
+            <button className="btn-sm btn-sm-green" style={{ width: '100%', padding: 12, marginTop: 16, fontSize: '1rem' }}
+              onClick={() => { onClose(); onRent(bike) }}>
+              🔑 Орендувати
+            </button>
+          )}
+          {!user && bike.is_available && (
+            <p style={{ textAlign: 'center', color: 'var(--muted)', fontSize: '.88rem', marginTop: 16 }}>
+              <button style={{ background: 'none', border: 'none', color: 'var(--green)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600 }} onClick={onClose}>
+                Увійдіть
+              </button>
+              {' '}щоб орендувати цей велосипед
+            </p>
+          )}
           {canEdit && (
             <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
               <button className="btn-sm btn-sm-edit" style={{ flex: 1, padding: 10 }}

@@ -3,10 +3,11 @@ const TYPE_LABEL = { mountain: 'Гірський', city: 'Міський', road:
 
 export { TYPE_EMOJI, TYPE_LABEL }
 
-export default function BikeCard({ bike, user, onDetail, onEdit, onDelete }) {
+export default function BikeCard({ bike, user, onDetail, onEdit, onDelete, onRent }) {
   const emoji = TYPE_EMOJI[bike.type] || '🚲'
   const label = TYPE_LABEL[bike.type] || bike.type
   const canEdit = user && (user.id === bike.owner_id || user.is_superuser)
+  const canRent = user && !user.is_superuser && bike.is_available
 
   return (
     <div className="bike-card" onClick={() => onDetail(bike)}>
@@ -25,6 +26,10 @@ export default function BikeCard({ bike, user, onDetail, onEdit, onDelete }) {
       </div>
       <div className="bike-card-footer">
         <button className="btn-sm btn-sm-green" onClick={e => { e.stopPropagation(); onDetail(bike) }}>Деталі</button>
+        {canRent && (
+          <button className="btn-sm" style={{ background: '#27ae6033', color: 'var(--green)', border: '1px solid #27ae6044', flex: 'none', padding: '9px 14px' }}
+            onClick={e => { e.stopPropagation(); onRent(bike) }}>🔑</button>
+        )}
         {canEdit && (
           <>
             <button className="btn-sm btn-sm-edit" onClick={e => { e.stopPropagation(); onEdit(bike) }}>✏️</button>

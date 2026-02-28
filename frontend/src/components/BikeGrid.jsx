@@ -9,7 +9,7 @@ const FILTERS = [
   { value: 'electric', label: '⚡ Електричні' },
 ]
 
-export default function BikeGrid({ bikes, loading, filter, availableOnly, user, onFilterChange, onAvailableChange, onDetail, onEdit, onDelete }) {
+export default function BikeGrid({ bikes, loading, filter, availableOnly, user, onFilterChange, onAvailableChange, onDetail, onEdit, onDelete, onRent }) {
   const bikeList = bikes ?? []
   return (
     <div className="section" id="catalog">
@@ -49,6 +49,7 @@ export default function BikeGrid({ bikes, loading, filter, availableOnly, user, 
               onDetail={onDetail}
               onEdit={onEdit}
               onDelete={onDelete}
+              onRent={onRent}
             />
           ))
         )}

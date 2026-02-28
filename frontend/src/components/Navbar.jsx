@@ -1,4 +1,4 @@
-export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAddBike, onLogout }) {
+export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAddBike, onProfile, onLogout }) {
   return (
     <nav>
       <button className="nav-logo" onClick={onCatalog}>
@@ -10,7 +10,7 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
         <button onClick={onCatalog}>Каталог</button>
         {user ? (
           <>
-            <span className="nav-username">👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</span>
+            <button className="nav-profile-btn" onClick={onProfile}>👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</button>
             {user.is_superuser && <button onClick={onAddBike}>+ Додати велосипед</button>}
             <button className="btn-outline" onClick={onLogout}>Вийти</button>
           </>

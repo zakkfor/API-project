@@ -49,6 +49,8 @@ nav {
 .nav-links button.btn-outline { border: 1.5px solid rgba(255,255,255,.15); color: var(--muted); border-radius: 8px; }
 .nav-links button.btn-outline:hover { border-color: var(--accent); color: var(--accent); background: rgba(233,69,96,.07); }
 .nav-username { color: var(--green); font-weight: 600; padding: 8px 12px; font-size: .9rem; }
+.nav-profile-btn { background: #27ae6018; border: 1.5px solid rgba(39,174,96,.25); color: var(--green); font-weight: 600; padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: .9rem; font-family: inherit; transition: all .2s; }
+.nav-profile-btn:hover { background: #27ae6030; border-color: var(--green); }
 
 /* ── Hero ─────────────────────────────────────────────────── */
 .hero {

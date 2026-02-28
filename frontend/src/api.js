@@ -74,6 +74,14 @@ export async function deleteBicycle(id) {
   return apiFetch(`/bicycles/${id}`, { method: 'DELETE' })
 }
 
+export async function createRental(data) {
+  return apiFetch('/rentals/', { method: 'POST', body: JSON.stringify(data) })
+}
+
+export async function getMyRentals() {
+  return apiFetch('/rentals/my')
+}
+
 export function saveToken(token) {
   localStorage.setItem('token', token)
 }

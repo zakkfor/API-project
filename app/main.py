@@ -9,8 +9,7 @@ from fastapi.responses import FileResponse
 from app.config import settings
 from app.api.v1 import router as api_v1_router
 from app.database import Base, engine
-import app.models.user  # noqa: F401 — ensure models are registered
-import app.models.bicycle  # noqa: F401 — ensure models are registered
+import app.models  # noqa: F401 — registers all models (User, Bicycle, Rental) with SQLAlchemy
 from app.seed import seed_db
 
 logger = logging.getLogger(__name__)

@@ -11,6 +11,8 @@ import BikeGrid from './components/BikeGrid'
 import AuthModal from './components/AuthModal'
 import BikeModal from './components/BikeModal'
 import DetailModal from './components/DetailModal'
+import RentModal from './components/RentModal'
+import ProfileModal from './components/ProfileModal'
 import Toast from './components/Toast'
 
 let toastCounter = 0
@@ -23,7 +25,7 @@ export default function App() {
   const [filter, setFilter] = useState('')
   const [availableOnly, setAvailableOnly] = useState(false)
   const [toasts, setToasts] = useState([])
-  const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail'
+  const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail' | 'rent' | 'profile'
   const [selectedBike, setSelectedBike] = useState(null)
 
   function addToast(msg, error = false) {
@@ -93,6 +95,17 @@ export default function App() {
     addToast('Ви вийшли з системи')
   }
 
+  function openRent(bike) {
+    if (!user) { setModal('auth'); return }
+    setSelectedBike(bike)
+    setModal('rent')
+  }
+
+  function openProfile() {
+    if (!user) { setModal('auth'); return }
+    setModal('profile')
+  }
+
   function openAddBike() {
     if (!user) { setModal('auth'); return }
     if (!user.is_superuser) { addToast('Тільки адміністратори можуть додавати велосипеди', true); return }
@@ -139,6 +152,7 @@ export default function App() {
         onTypes={scrollToTypes}
         onAuth={() => setModal('auth')}
         onAddBike={openAddBike}
+        onProfile={openProfile}
         onLogout={handleLogout}
       />
       <Hero
@@ -164,6 +178,7 @@ export default function App() {
         onDetail={openDetail}
         onEdit={openEditBike}
         onDelete={handleDelete}
+        onRent={openRent}
       />
       <footer>
         <div className="footer-content">
@@ -208,6 +223,18 @@ export default function App() {
         onClose={() => setModal(null)}
         onEdit={bike => { setModal(null); openEditBike(bike) }}
         onDelete={handleDelete}
+        onRent={openRent}
+      />
+      <RentModal
+        open={modal === 'rent'}
+        bike={selectedBike}
+        onClose={() => setModal(null)}
+        onRented={msg => { addToast(msg); loadBikes() }}
+      />
+      <ProfileModal
+        open={modal === 'profile'}
+        user={user}
+        onClose={() => setModal(null)}
       />
       <Toast toasts={toasts} />
     </>
