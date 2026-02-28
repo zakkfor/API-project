@@ -1,5 +1,5 @@
-const TYPE_EMOJI = { mountain: '🏔️', city: '🏙️', road: '🛣️', bmx: '🤸', electric: '⚡' }
-const TYPE_LABEL = { mountain: 'Гірський', city: 'Міський', road: 'Шосейний', bmx: 'BMX', electric: 'Електричний' }
+const TYPE_EMOJI = { mountain: '🏔️', city: '🏙️', road: '🛣️', bmx: '🤸', electric: '⚡', gravel: '🪨' }
+const TYPE_LABEL = { mountain: 'Гірський', city: 'Міський', road: 'Шосейний', bmx: 'BMX', electric: 'Електричний', gravel: 'Гравійний' }
 
 export { TYPE_EMOJI, TYPE_LABEL }
 

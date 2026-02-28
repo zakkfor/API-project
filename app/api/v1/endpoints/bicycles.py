@@ -20,7 +20,7 @@ router = APIRouter()
 async def list_bicycles(
     skip: int = 0,
     limit: int = 100,
-    type: Optional[str] = Query(None, pattern="^(mountain|city|road|bmx|electric)$", description="Filter by type: mountain/city/road/bmx/electric"),
+    type: Optional[str] = Query(None, pattern="^(mountain|city|road|bmx|electric|gravel)$", description="Filter by type: mountain/city/road/bmx/electric/gravel"),
     available_only: bool = Query(False, description="Show only available bicycles"),
     db: Session = Depends(get_db),
 ):

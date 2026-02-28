@@ -16,7 +16,7 @@ class Bicycle(Base):
     name = Column(String, nullable=False, index=True)
     brand = Column(String, nullable=False, index=True)
     model = Column(String, nullable=False)
-    type = Column(String, nullable=False)          # mountain / city / road / bmx / electric
+    type = Column(String, nullable=False)          # mountain / city / road / bmx / electric / gravel
     price_per_hour = Column(Float, nullable=False)
     description = Column(String, nullable=True)
     is_available = Column(Boolean, default=True)
