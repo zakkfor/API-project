@@ -43,11 +43,24 @@ restartPolicyMaxRetries = 3
 
 ### 1.4 Отримати публічний URL бекенду
 
-1. У Railway вибери свій сервіс → вкладка **"Settings"** → розділ **"Networking"**.
-2. Натисни **"Generate Domain"** (якщо домену ще немає).
-3. Скопіюй URL — він виглядає як `https://api-project-production-xxxx.up.railway.app`.
+Це **саме той URL**, який треба вставити як `VITE_API_URL` на Netlify.
 
-> Переконайся, що `https://YOUR_BACKEND_URL/health` відповідає `{"status":"healthy"}`.
+**Де його знайти в Railway:**
+
+1. Відкрий [railway.app/dashboard](https://railway.app/dashboard) і зайди у свій проект.
+2. Клікни на картку **сервісу** (вона називається `API-project` або схоже).
+3. Перейди на вкладку **"Settings"** (у верхньому рядку вкладок сервісу).
+4. Прокрути вниз до розділу **"Networking"** → підрозділ **"Public Networking"**.
+5. Там буде поле **"Domain"** — якщо домену ще немає, натисни **"Generate Domain"**.
+6. Після генерації з'явиться URL виду:
+   ```
+   https://api-project-production-xxxx.up.railway.app
+   ```
+7. **Скопіюй цей URL** — він і є `VITE_API_URL`.
+
+> 💡 **Альтернативний спосіб:** Після успішного деплою Railway показує URL прямо на вкладці **"Deployments"** → клікни на останній деплой → у правому верхньому куті побачиш посилання на домен.
+
+> ✅ **Перевірка:** Відкрий у браузері `https://ТУТ_ТВІЙ_URL/health` — має відповісти `{"status":"healthy"}`. Якщо так — бекенд працює і URL правильний.
 
 ---
 
@@ -80,9 +93,14 @@ restartPolicyMaxRetries = 3
 
 | Ім'я | Значення |
 |---|---|
-| `VITE_API_URL` | URL бекенду з Кроку 1.4, наприклад `https://api-project-production-xxxx.up.railway.app` |
+| `VITE_API_URL` | URL бекенду з **Кроку 1.4** (Railway → сервіс → Settings → Networking → Domain) |
 
-> ⚠️ **Без trailing slash!** Тобто `https://...railway.app`, а **не** `https://...railway.app/`
+**Приклад значення:**
+```
+https://api-project-production-xxxx.up.railway.app
+```
+
+> ⚠️ **Без косої риски в кінці!** Тобто `https://...railway.app` — а **не** `https://...railway.app/`
 
 3. Натисни **"Deploy site"**.
 
