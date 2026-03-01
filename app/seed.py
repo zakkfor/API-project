@@ -132,6 +132,16 @@ SEED_BIKES: list[BicycleCreate] = [
         is_available=True,
         image_url="/static/bikes/bmx.svg",
     ),
+    BicycleCreate(
+        name="Trek Checkpoint ALR 5",
+        brand="Trek",
+        model="Checkpoint ALR 5",
+        type="gravel",
+        price_per_hour=110.0,
+        description="Універсальний гравел-велосипед для асфальту та ґрунтових доріг. Алюмінієва рама, карбонова вилка, Shimano GRX 11 швидкостей.",
+        is_available=True,
+        image_url="/static/bikes/road.svg",
+    ),
 ]
 
 

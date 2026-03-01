@@ -197,7 +197,6 @@ export default function App() {
           <div className="footer-col">
             <div className="footer-col-title">Контакти</div>
             <span className="footer-link">📧 info@bikehouse.ua</span>
-            <span className="footer-link">📞 +380 XX XXX XX XX</span>
             <span className="footer-link">📍 Вінниця, Україна</span>
           </div>
         </div>

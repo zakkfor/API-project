@@ -12,7 +12,7 @@ export default function StatsBar({ total, available }) {
       </div>
       <div className="stat-divider" />
       <div className="stat">
-        <div className="stat-num">5</div>
+        <div className="stat-num">6</div>
         <div className="stat-label">Типів велосипедів</div>
       </div>
       <div className="stat-divider" />
