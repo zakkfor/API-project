@@ -13,6 +13,7 @@ class BicycleBase(BaseModel):
     image_url: Optional[str] = None
 
 class BicycleCreate(BicycleBase):
+    pass
 
 class BicycleUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
