@@ -1,5 +1,4 @@
-// VITE_API_URL must NOT have a trailing slash, e.g. https://my-backend.up.railway.app
-// When not set (FastAPI embedded mode) it defaults to '' and calls go to /api/v1/*
+
 const BASE = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '') + '/api/v1'
 
 function getToken() {
