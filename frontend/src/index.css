@@ -678,4 +678,102 @@ footer {
   .features-grid, .types-grid, .how-grid { grid-template-columns: 1fr 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
   .footer-content { grid-template-columns: 1fr; gap: 24px; padding: 40px 20px 24px; }
+  .catalog-toolbar { flex-direction: column; }
+  .catalog-search, .catalog-sort { min-width: unset; width: 100%; }
+}
+
+/* ── Scroll progress bar ─────────────────────────────────── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 1001;
+  background: linear-gradient(90deg, var(--green), var(--green-l));
+  box-shadow: 0 0 10px rgba(39,174,96,.6);
+  transition: width .12s linear;
+  pointer-events: none;
+}
+
+/* ── Back-to-top button ──────────────────────────────────── */
+.back-to-top {
+  position: fixed; bottom: 80px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--green); color: #fff;
+  border: none; font-size: 1.3rem;
+  cursor: pointer; z-index: 500;
+  box-shadow: 0 4px 18px rgba(39,174,96,.45);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .2s;
+  animation: fade-in-up .3s ease;
+}
+.back-to-top:hover { background: var(--green-d); transform: translateY(-4px); }
+
+/* ── Scroll-reveal ────────────────────────────────────────── */
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal-animated {
+  animation: reveal-in .65s cubic-bezier(.25,.46,.45,.94) both;
+}
+
+/* ── Bike card entrance animation ────────────────────────── */
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.bike-card { animation: card-in .4s ease both; }
+
+/* ── Skeleton loading card ───────────────────────────────── */
+.bike-card-skeleton {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  height: 300px;
+  border: 1px solid rgba(255,255,255,.07);
+  overflow: hidden; position: relative;
+}
+.bike-card-skeleton::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.055) 50%, transparent 100%);
+  animation: shimmer 1.5s ease-in-out infinite;
+  transform: translateX(-100%);
+}
+@keyframes shimmer {
+  to { transform: translateX(200%); }
+}
+
+/* ── Catalog toolbar (search + sort) ────────────────────── */
+.catalog-toolbar {
+  display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.catalog-search {
+  flex: 1; min-width: 220px;
+  background: rgba(255,255,255,.05);
+  border: 1.5px solid rgba(255,255,255,.1);
+  color: var(--text); padding: 10px 16px;
+  border-radius: 9px; font-size: .95rem; font-family: inherit;
+  outline: none; transition: border-color .2s, background .2s;
+}
+.catalog-search:focus { border-color: var(--green); background: rgba(255,255,255,.07); }
+.catalog-search::placeholder { color: rgba(255,255,255,.3); }
+.catalog-sort {
+  background: rgba(255,255,255,.05);
+  border: 1.5px solid rgba(255,255,255,.1);
+  color: var(--text); padding: 10px 16px;
+  border-radius: 9px; font-size: .9rem; font-family: inherit;
+  outline: none; cursor: pointer; appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .2s; min-width: 180px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892a4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.catalog-sort:focus { border-color: var(--green); }
+.catalog-sort option { background: var(--dark2); }
+
+/* ── Toast exit animation ─────────────────────────────────── */
+.toast.leaving {
+  animation: slide-out .35s ease forwards;
+}
+@keyframes slide-out {
+  to { opacity: 0; transform: translateX(60px); }
 }

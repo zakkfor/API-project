@@ -3,14 +3,18 @@ const TYPE_LABEL = { mountain: 'Гірський', city: 'Міський', road:
 
 export { TYPE_EMOJI, TYPE_LABEL }
 
-export default function BikeCard({ bike, user, onDetail, onEdit, onDelete, onRent }) {
+export default function BikeCard({ bike, user, onDetail, onEdit, onDelete, onRent, animIndex = 0 }) {
   const emoji = TYPE_EMOJI[bike.type] || '🚲'
   const label = TYPE_LABEL[bike.type] || bike.type
   const canEdit = user && (user.id === bike.owner_id || user.is_superuser)
   const canRent = user && bike.is_available
 
   return (
-    <div className="bike-card" onClick={() => onDetail(bike)}>
+    <div
+      className="bike-card"
+      onClick={() => onDetail(bike)}
+      style={{ animationDelay: `${Math.min(animIndex * 0.05, 0.35)}s` }}
+    >
       <div className="bike-card-img">
         {bike.image_url
           ? <img src={bike.image_url} alt={bike.name} onError={e => { e.target.style.display = 'none' }} />

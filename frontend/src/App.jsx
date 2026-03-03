@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { getMe, getBicycles, deleteBicycle, removeToken } from './api'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -27,11 +27,18 @@ export default function App() {
   const [toasts, setToasts] = useState([])
   const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail' | 'rent' | 'profile'
   const [selectedBike, setSelectedBike] = useState(null)
+  const [search, setSearch] = useState('')
+  const [sort, setSort] = useState('default')
+  const [showTop, setShowTop] = useState(false)
+  const [scrollPct, setScrollPct] = useState(0)
 
   function addToast(msg, error = false) {
     const id = ++toastCounter
     setToasts(prev => [...prev, { id, msg, error }])
-    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3500)
+  }
+
+  function removeToast(id) {
+    setToasts(prev => prev.filter(t => t.id !== id))
   }
 
   async function loadUser() {
@@ -66,6 +73,36 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  // Scroll progress bar + back-to-top
+  useEffect(() => {
+    function onScroll() {
+      const d = document.documentElement
+      const s = d.scrollTop
+      const h = d.scrollHeight - d.clientHeight
+      setScrollPct(h > 0 ? (s / h) * 100 : 0)
+      setShowTop(s > 400)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Scroll-reveal for sections below the fold
+  useEffect(() => {
+    const selectors = ['.stats-bar', '.features-section', '.how-section', '.types-section', '.testimonials-section', '#catalog', 'footer']
+    const targets = selectors.map(s => document.querySelector(s)).filter(Boolean)
+    const vh = window.innerHeight
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('reveal-animated'); obs.unobserve(e.target) }
+      }),
+      { threshold: 0.07 }
+    )
+    targets.forEach(el => {
+      if (el.getBoundingClientRect().top >= vh) obs.observe(el)
+    })
+    return () => obs.disconnect()
   }, [])
 
   function scrollToCatalog() {
@@ -143,8 +180,26 @@ export default function App() {
   const totalBikes = allBikes.length || null
   const availBikes = allBikes.filter(b => b.is_available).length || null
 
+  // Client-side search + sort applied on top of server-filtered bikes
+  const displayBikes = useMemo(() => {
+    let list = [...bikes]
+    if (search.trim()) {
+      const q = search.trim().toLowerCase()
+      list = list.filter(b =>
+        b.name.toLowerCase().includes(q) ||
+        b.brand.toLowerCase().includes(q) ||
+        b.model.toLowerCase().includes(q)
+      )
+    }
+    if (sort === 'price-asc') list.sort((a, b) => a.price_per_hour - b.price_per_hour)
+    else if (sort === 'price-desc') list.sort((a, b) => b.price_per_hour - a.price_per_hour)
+    else if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name, 'uk'))
+    return list
+  }, [bikes, search, sort])
+
   return (
     <>
+      <div className="scroll-progress" style={{ width: `${scrollPct}%` }} />
       <Navbar
         user={user}
         onCatalog={scrollToCatalog}
@@ -169,13 +224,17 @@ export default function App() {
       <TypesSection onFilterChange={setFilter} onCatalog={scrollToCatalog} />
       <TestimonialsSection />
       <BikeGrid
-        bikes={bikes}
+        bikes={displayBikes}
         loading={loading}
         filter={filter}
         availableOnly={availableOnly}
+        search={search}
+        sort={sort}
         user={user}
         onFilterChange={setFilter}
         onAvailableChange={setAvailableOnly}
+        onSearchChange={setSearch}
+        onSortChange={setSort}
         onDetail={openDetail}
         onEdit={openEditBike}
         onDelete={handleDelete}
@@ -236,7 +295,10 @@ export default function App() {
         user={user}
         onClose={() => setModal(null)}
       />
-      <Toast toasts={toasts} />
+      <Toast toasts={toasts} onRemove={removeToast} />
+      {showTop && (
+        <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Вгору">↑</button>
+      )}
     </>
   )
 }
