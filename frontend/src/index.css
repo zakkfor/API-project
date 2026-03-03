@@ -705,13 +705,42 @@ footer {
 }
 .back-to-top:hover { background: var(--green-d); transform: translateY(-4px); }
 
-/* ── Scroll-reveal ────────────────────────────────────────── */
+/* ── Scroll-reveal (kept for backward compat) ─────────────── */
 @keyframes reveal-in {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .reveal-animated {
   animation: reveal-in .65s cubic-bezier(.25,.46,.45,.94) both;
+}
+
+/* ── Per-item staggered reveal ────────────────────────────── */
+.ri-pre {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity  .52s cubic-bezier(.16, 1, .3, 1) calc(var(--ri-i, 0) * 70ms),
+    transform .52s cubic-bezier(.16, 1, .3, 1) calc(var(--ri-i, 0) * 70ms);
+}
+/* Section headings slide in from the left */
+.section-title.ri-pre,
+.section-sub.ri-pre {
+  transform: translateX(-20px);
+}
+/* Type cards scale in */
+.type-card.ri-pre {
+  transform: scale(0.88) translateY(10px);
+}
+/* How-It-Works cards alternate left/right */
+.how-card:nth-child(odd).ri-pre  { transform: translateX(-18px); }
+.how-card:nth-child(even).ri-pre { transform: translateX(18px); }
+/* Footer items slide up */
+.footer-brand.ri-pre,
+.footer-col.ri-pre { transform: translateY(20px); }
+/* Visible state — same for all */
+.ri-pre.ri-visible {
+  opacity: 1;
+  transform: none;
 }
 
 /* ── Bike card entrance animation ────────────────────────── */

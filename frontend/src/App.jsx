@@ -88,19 +88,36 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Scroll-reveal for sections below the fold
+  // Scroll-reveal — staggered per-item animations
   useEffect(() => {
-    const selectors = ['.stats-bar', '.features-section', '.how-section', '.types-section', '.testimonials-section', '#catalog', 'footer']
-    const targets = selectors.map(s => document.querySelector(s)).filter(Boolean)
     const vh = window.innerHeight
+    const itemSel = [
+      '.feature-card', '.how-card', '.type-card', '.review-card',
+      '.stat', '.section-title', '.section-sub',
+      '.footer-brand', '.footer-col',
+    ].join(', ')
+    const allItems = [...document.querySelectorAll(itemSel)]
+
+    // Assign stagger index per parent group
+    const parents = new Map()
+    allItems.forEach(el => {
+      const p = el.parentElement
+      if (!parents.has(p)) parents.set(p, [])
+      parents.get(p).push(el)
+    })
+    parents.forEach(els => els.forEach((el, i) => el.style.setProperty('--ri-i', i)))
+
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('reveal-animated'); obs.unobserve(e.target) }
+        if (e.isIntersecting) { e.target.classList.add('ri-visible'); obs.unobserve(e.target) }
       }),
-      { threshold: 0.07 }
+      { threshold: 0.08 }
     )
-    targets.forEach(el => {
-      if (el.getBoundingClientRect().top >= vh) obs.observe(el)
+    allItems.forEach(el => {
+      if (el.getBoundingClientRect().top >= vh * 0.88) {
+        el.classList.add('ri-pre')
+        obs.observe(el)
+      }
     })
     return () => obs.disconnect()
   }, [])
