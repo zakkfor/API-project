@@ -21,9 +21,22 @@ const TABS = [
   { key: 'accessories', label: '🎒 Аксесуари' },
 ]
 
+/** Parse a form input value: keep '' for empty numbers, coerce others */
+function parseFieldValue(field, rawValue) {
+  if (field.type === 'number') {
+    return rawValue === '' ? '' : Number(rawValue)
+  }
+  return rawValue
+}
+
+/** Coerce select-backed boolean values ('true'/'false'/bool → bool) */
+function coerceBool(value) {
+  return value === true || value === 'true'
+}
+
 function FormModal({ title, fields, values, onChange, onSave, onClose, saving }) {
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay open" onClick={onClose}>
       <div className="modal admin-form-modal" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2 className="modal-title">{title}</h2>
@@ -53,7 +66,7 @@ function FormModal({ title, fields, values, onChange, onSave, onClose, saving })
                   className="admin-form-input"
                   type={f.type || 'text'}
                   value={values[f.key] ?? ''}
-                  onChange={e => onChange(f.key, f.type === 'number' ? (e.target.value === '' ? '' : Number(e.target.value)) : e.target.value)}
+                  onChange={e => onChange(f.key, parseFieldValue(f, e.target.value))}
                   placeholder={f.placeholder || ''}
                   step={f.step}
                   min={f.min}
@@ -139,7 +152,7 @@ function BicycleTab({ isAdmin, toast }) {
   async function save() {
     setSaving(true)
     const v = { ...form.values }
-    v.is_available = v.is_available === true || v.is_available === 'true'
+    v.is_available = coerceBool(v.is_available)
     if (v.year === '') v.year = null
     const res = form.mode === 'add'
       ? await createBicycle(v)
@@ -740,7 +753,7 @@ export default function AdminPanel({ user, onClose, addToast }) {
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay open" onClick={onClose}>
       <div className="modal admin-panel-modal" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2 className="modal-title">🚲 ВелоХаус — Панель керування</h2>

@@ -45,7 +45,7 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
           {user ? (
             <>
               <button className="nav-profile-btn" onClick={onProfile}>👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</button>
-              <button onClick={onAdmin}>Панель</button>
+              <button onClick={onAdmin} aria-label="Відкрити панель керування">Панель</button>
               {user.is_superuser && <button onClick={onAddBike}>+ Додати велосипед</button>}
               <button className="btn-outline" onClick={onLogout}>Вийти</button>
             </>
@@ -77,7 +77,7 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
         {user ? (
           <>
             <button className="nav-profile-btn" onClick={go(onProfile)}>👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</button>
-            <button onClick={go(onAdmin)}>Панель</button>
+            <button onClick={go(onAdmin)} aria-label="Відкрити панель керування">Панель</button>
             {user.is_superuser && <button onClick={go(onAddBike)}>+ Додати велосипед</button>}
             <button className="btn-outline" onClick={go(onLogout)}>Вийти</button>
           </>
