@@ -24,7 +24,7 @@ const TABS = [
 function FormModal({ title, fields, values, onChange, onSave, onClose, saving }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-box admin-form-modal" onClick={e => e.stopPropagation()}>
+      <div className="modal admin-form-modal" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2 className="modal-title">{title}</h2>
         <div className="admin-form-fields">
@@ -741,7 +741,7 @@ export default function AdminPanel({ user, onClose, addToast }) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-box admin-panel-modal" onClick={e => e.stopPropagation()}>
+      <div className="modal admin-panel-modal" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2 className="modal-title">🚲 ВелоХаус — Панель керування</h2>
         <div className="admin-tabs">
