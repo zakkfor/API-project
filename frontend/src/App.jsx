@@ -13,6 +13,7 @@ import BikeModal from './components/BikeModal'
 import DetailModal from './components/DetailModal'
 import RentModal from './components/RentModal'
 import ProfileModal from './components/ProfileModal'
+import AdminPanel from './components/AdminPanel'
 import Toast from './components/Toast'
 
 let toastCounter = 0
@@ -25,7 +26,7 @@ export default function App() {
   const [filter, setFilter] = useState('')
   const [availableOnly, setAvailableOnly] = useState(false)
   const [toasts, setToasts] = useState([])
-  const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail' | 'rent' | 'profile'
+  const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail' | 'rent' | 'profile' | 'admin'
   const [selectedBike, setSelectedBike] = useState(null)
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('default')
@@ -226,6 +227,7 @@ export default function App() {
         onAddBike={openAddBike}
         onProfile={openProfile}
         onLogout={handleLogout}
+        onAdmin={() => setModal('admin')}
       />
       <Hero
         user={user}
@@ -312,6 +314,9 @@ export default function App() {
         user={user}
         onClose={() => setModal(null)}
       />
+      {modal === 'admin' && (
+        <AdminPanel user={user} onClose={() => setModal(null)} addToast={addToast} />
+      )}
       <Toast toasts={toasts} onRemove={removeToast} />
       {showTop && (
         <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Вгору">↑</button>

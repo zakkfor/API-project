@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 
-export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAddBike, onProfile, onLogout }) {
+export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAddBike, onProfile, onLogout, onAdmin }) {
   const [open, setOpen] = useState(false)
   const drawerRef = useRef(null)
 
@@ -45,6 +45,7 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
           {user ? (
             <>
               <button className="nav-profile-btn" onClick={onProfile}>👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</button>
+              <button onClick={onAdmin}>Панель</button>
               {user.is_superuser && <button onClick={onAddBike}>+ Додати велосипед</button>}
               <button className="btn-outline" onClick={onLogout}>Вийти</button>
             </>
@@ -76,6 +77,7 @@ export default function Navbar({ user, onCatalog, onAbout, onTypes, onAuth, onAd
         {user ? (
           <>
             <button className="nav-profile-btn" onClick={go(onProfile)}>👤 {user.username}{user.is_superuser ? ' 🛡️' : ''}</button>
+            <button onClick={go(onAdmin)}>Панель</button>
             {user.is_superuser && <button onClick={go(onAddBike)}>+ Додати велосипед</button>}
             <button className="btn-outline" onClick={go(onLogout)}>Вийти</button>
           </>
