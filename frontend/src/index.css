@@ -230,7 +230,7 @@ nav {
 .how-section { background: var(--dark3); }
 .how-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px; position: relative;
 }
 .how-card {
@@ -671,6 +671,7 @@ footer {
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {
   .footer-content { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .how-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
   nav { padding: 0 16px; }
