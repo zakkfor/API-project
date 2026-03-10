@@ -17,6 +17,8 @@ class Bicycle(Base):
     brand = Column(String, nullable=False, index=True)
     model = Column(String, nullable=False)
     type = Column(String, nullable=False)          # mountain / city / road / bmx / electric / gravel
+    year = Column(Integer, nullable=True)          # рік випуску
+    color = Column(String, nullable=True)          # колір
     price_per_hour = Column(Float, nullable=False)
     description = Column(String, nullable=True)
     is_available = Column(Boolean, default=True)
@@ -27,3 +29,9 @@ class Bicycle(Base):
 
     owner = relationship("User", back_populates="bicycles")
     rentals = relationship("Rental", back_populates="bicycle")
+    repairs = relationship("Repair", back_populates="bicycle", cascade="all, delete-orphan")
+    accessories = relationship(
+        "Accessory",
+        secondary="bicycle_accessories",
+        back_populates="bicycles",
+    )

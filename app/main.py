@@ -9,7 +9,8 @@ from fastapi.responses import FileResponse
 from app.config import settings
 from app.api.v1 import router as api_v1_router
 from app.database import Base, engine
-import app.models  # noqa: F401 — registers all models (User, Bicycle, Rental) with SQLAlchemy
+import app.models  # noqa: F401 — registers all models with SQLAlchemy
+from app.migrate import run_migrations
 from app.seed import seed_db
 
 logger = logging.getLogger(__name__)
@@ -18,14 +19,20 @@ logger = logging.getLogger(__name__)
 async def _init_db() -> None:
     """Initialise schema and seed data in a thread so the event loop is not blocked."""
     try:
+        # 1. Create all new tables (idempotent)
         await asyncio.to_thread(Base.metadata.create_all, engine)
     except Exception:
         logger.exception("Failed to create database tables — app will start without a schema.")
         return
     try:
+        # 2. Add new columns to existing tables (ALTER TABLE, ignores duplicates)
+        await asyncio.to_thread(run_migrations, engine)
+    except Exception:
+        logger.exception("Failed to run migrations — some new columns may be missing.")
+    try:
         await asyncio.to_thread(seed_db)
     except Exception:
-        logger.exception("Failed to seed database — app will start without seed data.")
+        logger.exception("Failed to seed database — app will continue without seed data.")
 
 
 @asynccontextmanager
