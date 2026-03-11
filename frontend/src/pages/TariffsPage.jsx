@@ -95,18 +95,18 @@ export default function TariffsPage({ user, addToast }) {
   }
   useEffect(() => { load() }, [])
 
-  const displayed = tariffs.filter(t =>
-    !search || t.name.toLowerCase().includes(search.toLowerCase()) ||
-    (t.rental_point || '').toLowerCase().includes(search.toLowerCase())
+  const displayed = tariffs.filter(tariff =>
+    !search || tariff.name.toLowerCase().includes(search.toLowerCase()) ||
+    (tariff.rental_point || '').toLowerCase().includes(search.toLowerCase())
   )
 
   async function handleSave(vals) {
     setSaving(true)
-    const v = { ...vals }
-    if (v.price_per_hour === '') v.price_per_hour = null
-    if (v.price_per_day === '') v.price_per_day = null
-    if (v.deposit === '') v.deposit = null
-    const res = form.mode === 'add' ? await createTariff(v) : await updateTariff(form.data.id, v)
+    const tariffData = { ...vals }
+    if (tariffData.price_per_hour === '') tariffData.price_per_hour = null
+    if (tariffData.price_per_day === '') tariffData.price_per_day = null
+    if (tariffData.deposit === '') tariffData.deposit = null
+    const res = form.mode === 'add' ? await createTariff(tariffData) : await updateTariff(form.data.id, tariffData)
     setSaving(false)
     if (res.ok) { addToast(form.mode === 'add' ? 'Тариф додано ✅' : 'Збережено ✅'); setForm(null); load() }
     else addToast(res.data?.detail || 'Помилка', true)
@@ -160,8 +160,8 @@ export default function TariffsPage({ user, addToast }) {
         ) : (
           <div className="page-grid-3">
             {displayed.map(t => (
-              <TariffCard key={t.id} tariff={t} user={user}
-                onEdit={t => setForm({ mode: 'edit', data: t })}
+              <TariffCard key={tariff.id} tariff={tariff} user={user}
+                onEdit={tariff => setForm({ mode: 'edit', data: tariff })}
                 onDelete={handleDelete}
               />
             ))}

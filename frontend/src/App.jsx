@@ -235,7 +235,7 @@ export default function App() {
         onAddBike={openAddBike}
         onProfile={openProfile}
         onLogout={handleLogout}
-        onNavigate={p => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+        onNavigate={pageName => { setPage(pageName); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
       />
       {page === 'routes' && (
         <RoutesPage user={user} addToast={addToast} />
