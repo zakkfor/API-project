@@ -159,7 +159,7 @@ export default function TariffsPage({ user, addToast }) {
           <div className="page-empty">💰 Тарифи не знайдено</div>
         ) : (
           <div className="page-grid-3">
-            {displayed.map(t => (
+            {displayed.map(tariff => (
               <TariffCard key={tariff.id} tariff={tariff} user={user}
                 onEdit={tariff => setForm({ mode: 'edit', data: tariff })}
                 onDelete={handleDelete}
