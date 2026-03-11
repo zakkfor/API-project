@@ -13,8 +13,14 @@ import BikeModal from './components/BikeModal'
 import DetailModal from './components/DetailModal'
 import RentModal from './components/RentModal'
 import ProfileModal from './components/ProfileModal'
-import AdminPanel from './components/AdminPanel'
 import Toast from './components/Toast'
+import RoutesPage from './pages/RoutesPage'
+import TariffsPage from './pages/TariffsPage'
+import RentalsPage from './pages/RentalsPage'
+import AccessoriesPage from './pages/AccessoriesPage'
+import SparePartsPage from './pages/SparePartsPage'
+import RepairsPage from './pages/RepairsPage'
+import ClientsPage from './pages/ClientsPage'
 
 let toastCounter = 0
 
@@ -26,12 +32,13 @@ export default function App() {
   const [filter, setFilter] = useState('')
   const [availableOnly, setAvailableOnly] = useState(false)
   const [toasts, setToasts] = useState([])
-  const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail' | 'rent' | 'profile' | 'admin'
+  const [modal, setModal] = useState(null) // null | 'auth' | 'addBike' | 'editBike' | 'detail' | 'rent' | 'profile'
   const [selectedBike, setSelectedBike] = useState(null)
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('default')
   const [showTop, setShowTop] = useState(false)
   const [scrollPct, setScrollPct] = useState(0)
+  const [page, setPage] = useState('home') // 'home' | 'routes' | 'tariffs' | 'rentals' | 'accessories' | 'spare_parts' | 'repairs' | 'clients'
 
   function addToast(msg, error = false) {
     const id = ++toastCounter
@@ -220,6 +227,7 @@ export default function App() {
       <div className="scroll-progress" style={{ width: `${scrollPct}%` }} />
       <Navbar
         user={user}
+        page={page}
         onCatalog={scrollToCatalog}
         onAbout={scrollToAbout}
         onTypes={scrollToTypes}
@@ -227,8 +235,30 @@ export default function App() {
         onAddBike={openAddBike}
         onProfile={openProfile}
         onLogout={handleLogout}
-        onAdmin={() => setModal('admin')}
+        onNavigate={p => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
       />
+      {page === 'routes' && (
+        <RoutesPage user={user} addToast={addToast} />
+      )}
+      {page === 'tariffs' && (
+        <TariffsPage user={user} addToast={addToast} />
+      )}
+      {page === 'rentals' && (
+        <RentalsPage user={user} onAuth={() => setModal('auth')} />
+      )}
+      {page === 'accessories' && (
+        <AccessoriesPage user={user} addToast={addToast} />
+      )}
+      {page === 'spare_parts' && (
+        <SparePartsPage user={user} addToast={addToast} onAuth={() => setModal('auth')} />
+      )}
+      {page === 'repairs' && (
+        <RepairsPage user={user} addToast={addToast} onAuth={() => setModal('auth')} />
+      )}
+      {page === 'clients' && (
+        <ClientsPage user={user} addToast={addToast} onAuth={() => setModal('auth')} />
+      )}
+      {page === 'home' && (<>
       <Hero
         user={user}
         onCatalog={scrollToCatalog}
@@ -282,6 +312,7 @@ export default function App() {
           <p>© 2026 <strong>Bike House</strong> — Усі права захищено</p>
         </div>
       </footer>
+      </>)}
 
       <AuthModal
         open={modal === 'auth'}
@@ -314,9 +345,6 @@ export default function App() {
         user={user}
         onClose={() => setModal(null)}
       />
-      {modal === 'admin' && (
-        <AdminPanel user={user} onClose={() => setModal(null)} addToast={addToast} />
-      )}
       <Toast toasts={toasts} onRemove={removeToast} />
       {showTop && (
         <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Вгору">↑</button>

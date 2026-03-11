@@ -1038,3 +1038,581 @@ footer {
     padding: 1rem;
   }
 }
+
+/* ════════════════════════════════════════════════════════════
+   MULTI-PAGE SITE STYLES
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Navbar dropdown ──────────────────────────────────────── */
+.nav-pages-dropdown {
+  position: relative;
+}
+
+.nav-pages-btn {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.15s, background 0.15s;
+}
+.nav-pages-btn:hover, .nav-pages-btn.open {
+  border-color: var(--primary);
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--primary);
+}
+
+.nav-pages-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  background: var(--card-bg, #fff);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.12);
+  padding: 0.5rem;
+  z-index: 300;
+  animation: fadeDown 0.15s ease;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.nav-pages-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--text);
+  transition: background 0.12s;
+}
+.nav-pages-item:hover { background: var(--bg-subtle, #f3f4f6); }
+.nav-pages-item.active {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.nav-pages-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.4rem 0;
+}
+
+.nav-pages-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.2rem 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-drawer-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.5rem 0;
+}
+.nav-drawer-active {
+  background: rgba(37, 99, 235, 0.1) !important;
+  color: var(--primary) !important;
+}
+
+/* ── Page layout ─────────────────────────────────────────── */
+.page-layout {
+  min-height: 100vh;
+  padding-top: 70px;
+}
+
+/* ── Page hero ───────────────────────────────────────────── */
+.page-hero {
+  padding: 4rem 1.5rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.routes-hero     { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); }
+.tariffs-hero    { background: linear-gradient(135deg, #14532d 0%, #16a34a 100%); }
+.rentals-hero    { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); }
+.accessories-hero{ background: linear-gradient(135deg, #7c2d12 0%, #ea580c 100%); }
+.spareparts-hero { background: linear-gradient(135deg, #1e293b 0%, #475569 100%); }
+.repairs-hero    { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); }
+.clients-hero    { background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%); }
+
+.page-hero-content { max-width: 700px; margin: 0 auto; color: #fff; }
+
+.page-hero-badge {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.page-hero-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  color: #fff;
+}
+
+.page-hero-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.85);
+  margin: 0;
+}
+
+/* ── Page content ────────────────────────────────────────── */
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ── Page toolbar ────────────────────────────────────────── */
+.page-toolbar {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.page-toolbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.page-search {
+  padding: 0.65rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: var(--card-bg, #fff);
+  color: var(--text);
+  min-width: 260px;
+  max-width: 400px;
+  transition: border-color 0.15s;
+}
+.page-search:focus { outline: none; border-color: var(--primary); }
+
+/* ── Filter tabs ─────────────────────────────────────────── */
+.page-filter-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg, #fff);
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.filter-tab:hover { border-color: var(--primary); color: var(--primary); }
+.filter-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Page grids ──────────────────────────────────────────── */
+.page-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.page-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.25rem;
+}
+
+.page-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ── Generic page card ───────────────────────────────────── */
+.page-card {
+  background: var(--card-bg, #fff);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.page-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,.1);
+  transform: translateY(-2px);
+}
+
+.page-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Btn sizes ───────────────────────────────────────────── */
+.btn-sm {
+  padding: 0.3rem 0.7rem !important;
+  font-size: 0.82rem !important;
+}
+.btn-lg {
+  padding: 0.9rem 2rem !important;
+  font-size: 1rem !important;
+}
+.btn-danger {
+  background: #ef4444 !important;
+  color: #fff !important;
+  border: none !important;
+}
+.btn-danger:hover { background: #dc2626 !important; }
+
+/* ── Page form card ──────────────────────────────────────── */
+.page-form-card {
+  background: var(--card-bg, #fff);
+  border: 1.5px solid var(--primary);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-form-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  color: var(--text);
+}
+
+.page-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.page-form-full { grid-column: 1 / -1; }
+
+.page-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.page-form-field label {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.page-input {
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--card-bg, #fff);
+  color: var(--text);
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.page-input:focus { outline: none; border-color: var(--primary); }
+.page-textarea { min-height: 80px; resize: vertical; }
+
+.page-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Loading / empty ─────────────────────────────────────── */
+.page-loading, .page-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+/* ── Auth wall ───────────────────────────────────────────── */
+.page-auth-wall {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+.auth-wall-card {
+  text-align: center;
+  padding: 3rem 2.5rem;
+  background: var(--card-bg, #fff);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  max-width: 420px;
+}
+.auth-wall-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+.auth-wall-card h2 { margin: 0 0 0.75rem; font-size: 1.4rem; }
+.auth-wall-card p { color: var(--text-muted); margin: 0 0 1.5rem; }
+
+/* ── ROUTES PAGE ─────────────────────────────────────────── */
+.route-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.route-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+.route-badge {
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.badge-easy   { background: #dcfce7; color: #16a34a; }
+.badge-medium { background: #fef9c3; color: #ca8a04; }
+.badge-hard   { background: #fee2e2; color: #dc2626; }
+
+.route-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+.route-card-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.route-meta-item {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.route-map-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.route-map-link:hover { text-decoration: underline; }
+
+/* ── TARIFFS PAGE ────────────────────────────────────────── */
+.tariff-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+.tariff-card-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.tariff-point-badge {
+  font-size: 0.8rem;
+  background: rgba(37,99,235,0.1);
+  color: var(--primary);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+}
+.tariff-card-desc { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 1rem; }
+.tariff-pricing {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.tariff-price-item {
+  display: flex;
+  flex-direction: column;
+}
+.tariff-price-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+.tariff-price-label { font-size: 0.78rem; color: var(--text-muted); }
+.tariff-deposit { font-size: 0.85rem; color: var(--text-muted); }
+
+/* ── RENTALS PAGE ────────────────────────────────────────── */
+.rentals-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.rental-stat-card {
+  background: var(--card-bg, #fff);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  text-align: center;
+}
+.rental-stat-value { display: block; font-size: 2rem; font-weight: 800; color: var(--primary); }
+.rental-stat-label { font-size: 0.85rem; color: var(--text-muted); }
+
+.rental-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.rental-card-bike { font-weight: 600; font-size: 0.95rem; }
+.rental-status {
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.status-active    { background: #dcfce7; color: #16a34a; }
+.status-done      { background: #e0e7ff; color: #4f46e5; }
+.status-cancelled { background: #fee2e2; color: #dc2626; }
+
+.rental-card-dates { margin-bottom: 0.75rem; }
+.rental-date-row { display: flex; gap: 0.5rem; font-size: 0.88rem; color: var(--text-muted); }
+.rental-date-label { min-width: 70px; font-weight: 500; }
+.rental-card-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.rental-meta-item { font-size: 0.85rem; display: flex; gap: 0.35rem; }
+.rental-meta-label { color: var(--text-muted); }
+.rental-meta-value { font-weight: 600; }
+
+/* ── ACCESSORIES PAGE ────────────────────────────────────── */
+.accessory-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.accessory-category-badge {
+  font-size: 0.8rem;
+  background: rgba(234,88,12,0.1);
+  color: #ea580c;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+.accessory-low-stock {
+  font-size: 0.78rem;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+.accessory-card-title { font-size: 1rem; font-weight: 700; margin: 0 0 0.75rem; }
+.accessory-card-meta { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 0.75rem; }
+.accessory-meta-item { font-size: 0.85rem; color: var(--text-muted); }
+.accessory-card-footer { display: flex; justify-content: space-between; align-items: center; }
+.accessory-price { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+.accessory-quantity { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ── SPARE PARTS / CLIENTS TABLE ─────────────────────────── */
+.parts-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+}
+.parts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.parts-table th {
+  background: var(--bg-subtle, #f3f4f6);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  border-bottom: 1.5px solid var(--border);
+}
+.parts-table-row td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.parts-table-row:last-child td { border-bottom: none; }
+.parts-table-row:hover td { background: var(--bg-subtle, #f8fafc); }
+.part-sku {
+  background: var(--bg-subtle, #f3f4f6);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+}
+.qty-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.qty-ok  { background: #dcfce7; color: #16a34a; }
+.qty-low { background: #fee2e2; color: #dc2626; }
+.parts-table-actions { display: flex; gap: 0.4rem; }
+
+/* ── REPAIRS PAGE ────────────────────────────────────────── */
+.repair-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+.repair-type-badge {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #dc2626;
+}
+.repair-warranty {
+  font-size: 0.82rem;
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+.repair-card-meta { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem; }
+.repair-meta-row { display: flex; gap: 0.5rem; font-size: 0.88rem; align-items: center; }
+.repair-meta-row span { color: var(--text-muted); min-width: 80px; }
+.repair-description {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page-grid-2, .page-grid-3, .page-grid-4 {
+    grid-template-columns: 1fr;
+  }
+  .rentals-stats { grid-template-columns: 1fr 1fr; }
+  .page-toolbar { flex-direction: column; }
+  .page-form-grid { grid-template-columns: 1fr; }
+  .page-search { max-width: 100%; min-width: 0; width: 100%; }
+  .nav-pages-menu { left: auto; right: 0; transform: none; }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
