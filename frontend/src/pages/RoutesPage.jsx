@@ -124,6 +124,11 @@ export default function RoutesPage({ user, addToast }) {
   return (
     <div className="page-layout">
       <div className="page-hero routes-hero">
+        <div className="page-hero-shapes">
+          <div className="page-hero-shape page-hero-shape-1" />
+          <div className="page-hero-shape page-hero-shape-2" />
+          <div className="page-hero-shape page-hero-shape-3" />
+        </div>
         <div className="page-hero-content">
           <div className="page-hero-badge">🗺️ Маршрути</div>
           <h1 className="page-hero-title">Велосипедні маршрути</h1>

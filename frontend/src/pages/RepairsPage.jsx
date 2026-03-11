@@ -112,6 +112,11 @@ export default function RepairsPage({ user, addToast, onAuth }) {
     return (
       <div className="page-layout">
         <div className="page-hero repairs-hero">
+          <div className="page-hero-shapes">
+            <div className="page-hero-shape page-hero-shape-1" />
+            <div className="page-hero-shape page-hero-shape-2" />
+            <div className="page-hero-shape page-hero-shape-3" />
+          </div>
           <div className="page-hero-content">
             <div className="page-hero-badge">🔧 Ремонти</div>
             <h1 className="page-hero-title">Ремонт велосипедів</h1>
@@ -156,6 +161,11 @@ export default function RepairsPage({ user, addToast, onAuth }) {
   return (
     <div className="page-layout">
       <div className="page-hero repairs-hero">
+        <div className="page-hero-shapes">
+          <div className="page-hero-shape page-hero-shape-1" />
+          <div className="page-hero-shape page-hero-shape-2" />
+          <div className="page-hero-shape page-hero-shape-3" />
+        </div>
         <div className="page-hero-content">
           <div className="page-hero-badge">🔧 Ремонти</div>
           <h1 className="page-hero-title">Ремонт велосипедів</h1>

@@ -78,6 +78,11 @@ export default function RentalsPage({ user, onAuth }) {
     return (
       <div className="page-layout">
         <div className="page-hero rentals-hero">
+          <div className="page-hero-shapes">
+            <div className="page-hero-shape page-hero-shape-1" />
+            <div className="page-hero-shape page-hero-shape-2" />
+            <div className="page-hero-shape page-hero-shape-3" />
+          </div>
           <div className="page-hero-content">
             <div className="page-hero-badge">🗓️ Оренди</div>
             <h1 className="page-hero-title">Мої оренди</h1>
@@ -107,6 +112,11 @@ export default function RentalsPage({ user, onAuth }) {
   return (
     <div className="page-layout">
       <div className="page-hero rentals-hero">
+        <div className="page-hero-shapes">
+          <div className="page-hero-shape page-hero-shape-1" />
+          <div className="page-hero-shape page-hero-shape-2" />
+          <div className="page-hero-shape page-hero-shape-3" />
+        </div>
         <div className="page-hero-content">
           <div className="page-hero-badge">🗓️ Оренди</div>
           <h1 className="page-hero-title">Мої оренди</h1>
