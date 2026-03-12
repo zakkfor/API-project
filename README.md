@@ -165,6 +165,100 @@ start.bat
 
 ---
 
+## 🗄️ База даних і зберігання даних
+
+### Яка база даних використовується?
+
+Проект підтримує **дві бази даних** залежно від середовища:
+
+| Середовище | База даних | `DATABASE_URL` |
+|------------|-----------|----------------|
+| Локальна розробка | **SQLite** (файл `app.db`) | `sqlite:///./app.db` |
+| Продакшен (Railway з Volume) | **SQLite** (постійний том) | `sqlite:////data/app.db` |
+| Продакшен (Railway / Render) | **PostgreSQL** | `postgresql://user:pass@host:5432/dbname` |
+
+> **За замовчуванням** — SQLite. Файл `app.db` створюється автоматично у корені проекту при першому запуску. Для продакшену рекомендується PostgreSQL або SQLite на постійному томі (Railway Volume).
+
+---
+
+### Як налаштовується підключення?
+
+Підключення задається змінною середовища `DATABASE_URL` у файлі `.env`:
+
+```env
+# SQLite (локально)
+DATABASE_URL=sqlite:///./app.db
+
+# SQLite на Railway Volume (постійне зберігання)
+DATABASE_URL=sqlite:////data/app.db
+
+# PostgreSQL (продакшен)
+DATABASE_URL=postgresql://username:password@host:5432/database_name
+```
+
+Код підключення знаходиться у `app/database.py`:
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine(DATABASE_URL, ...)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+```
+
+> **Примітка:** Railway автоматично надає `DATABASE_URL` при підключенні плагіна PostgreSQL — вручну вказувати не потрібно.
+
+---
+
+### Як SQLAlchemy працює з базою даних?
+
+Проект використовує **SQLAlchemy ORM** — це означає, що:
+
+1. **Таблиці описані як Python-класи** (моделі) у папці `app/models/`
+2. **SQLAlchemy автоматично створює таблиці** при запуску через `Base.metadata.create_all(engine)`
+3. **Запити до БД** — через `Session` об'єкти, без написання SQL вручну
+4. **Міграції** — нові колонки застосовуються через `app/migrate.py` (ALTER TABLE)
+5. **Початкові дані** — автоматично заповнюються через `app/seed.py` при першому запуску
+
+---
+
+### Які таблиці є в базі даних?
+
+| Таблиця | Опис | Ключові поля |
+|---------|------|-------------|
+| `users` | Облікові записи користувачів (власники велосипедів, адміни) | `id`, `email`, `username`, `hashed_password`, `is_superuser` |
+| `bicycles` | Каталог велосипедів | `id`, `name`, `brand`, `type`, `price_per_hour`, `is_available`, `owner_id` |
+| `rentals` | Оренди велосипедів | `id`, `user_id`, `bicycle_id`, `hours`, `total_price`, `status` |
+| `tariffs` | Тарифні плани (знижки) | `id`, `name`, `discount_percent`, `min_hours` |
+| `clients` | Клієнти прокату (орендарі без аккаунту в системі) | `id`, `name`, `phone_number`, `email`, `loyalty_points` |
+| `routes` | Маршрути для катання | `id`, `name`, `distance_km`, `difficulty_level` |
+| `repairs` | Записи про ремонти | `id`, `bicycle_id`, `repair_type`, `performer`, `warranty_days` |
+| `spare_parts` | Запасні частини | `id`, `name`, `brand`, `category`, `price`, `quantity` |
+| `accessories` | Аксесуари | `id`, `name`, `category`, `brand`, `sale_price`, `quantity` |
+| `bicycle_accessories` | Зв'язок велосипед↔аксесуар (M:M) | `bicycle_id`, `accessory_id` |
+| `repair_spare_parts` | Зв'язок ремонт↔запчастина (M:M) | `repair_id`, `spare_part_id`, `quantity_used` |
+
+> **`users` vs `clients`:** `users` — це облікові записи для входу в систему (власники велосипедів, адміністратори). `clients` — це орендарі, яких реєструє адміністратор при оформленні оренди; вони можуть не мати аккаунту в системі.
+
+---
+
+### Схема зв'язків між таблицями
+
+```
+users ──────────────────────────────────────┐
+  │                                          ↓
+  └──── bicycles ──────────────────── rentals ──── tariffs
+             │      (bicycle_id/user_id) │
+             │                           ├──── clients
+             │                           └──── routes
+             │
+             ├──── repairs ──── repair_spare_parts ──── spare_parts
+             │
+             └──── bicycle_accessories ──── accessories
+```
+
+---
+
 ## 🚀 Запуск проекту (детальна інструкція)
 
 ### 1. Клонування репозиторію
@@ -445,6 +539,100 @@ MIT License — використовуйте вільно.
 | Аутентифікація | **JWT** (python-jose) |
 | Хешування паролів | **bcrypt** (passlib) |
 | Фронтенд | Vanilla HTML / CSS / JS (SPA) |
+
+---
+
+## 🗄️ База даних і зберігання даних
+
+### Яка база даних використовується?
+
+Проект підтримує **дві бази даних** залежно від середовища:
+
+| Середовище | База даних | `DATABASE_URL` |
+|------------|-----------|----------------|
+| Локальна розробка | **SQLite** (файл `app.db`) | `sqlite:///./app.db` |
+| Продакшен (Railway з Volume) | **SQLite** (постійний том) | `sqlite:////data/app.db` |
+| Продакшен (Railway / Render) | **PostgreSQL** | `postgresql://user:pass@host:5432/dbname` |
+
+> **За замовчуванням** — SQLite. Файл `app.db` створюється автоматично у корені проекту при першому запуску. Для продакшену рекомендується PostgreSQL або SQLite на постійному томі (Railway Volume).
+
+---
+
+### Як налаштовується підключення?
+
+Підключення задається змінною середовища `DATABASE_URL` у файлі `.env`:
+
+```env
+# SQLite (локально)
+DATABASE_URL=sqlite:///./app.db
+
+# SQLite на Railway Volume (постійне зберігання)
+DATABASE_URL=sqlite:////data/app.db
+
+# PostgreSQL (продакшен)
+DATABASE_URL=postgresql://username:password@host:5432/database_name
+```
+
+Код підключення знаходиться у `app/database.py`:
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine(DATABASE_URL, ...)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+```
+
+> **Примітка:** Railway автоматично надає `DATABASE_URL` при підключенні плагіна PostgreSQL — вручну вказувати не потрібно.
+
+---
+
+### Як SQLAlchemy працює з базою даних?
+
+Проект використовує **SQLAlchemy ORM** — це означає, що:
+
+1. **Таблиці описані як Python-класи** (моделі) у папці `app/models/`
+2. **SQLAlchemy автоматично створює таблиці** при запуску через `Base.metadata.create_all(engine)`
+3. **Запити до БД** — через `Session` об'єкти, без написання SQL вручну
+4. **Міграції** — нові колонки застосовуються через `app/migrate.py` (ALTER TABLE)
+5. **Початкові дані** — автоматично заповнюються через `app/seed.py` при першому запуску
+
+---
+
+### Які таблиці є в базі даних?
+
+| Таблиця | Опис | Ключові поля |
+|---------|------|-------------|
+| `users` | Облікові записи користувачів (власники велосипедів, адміни) | `id`, `email`, `username`, `hashed_password`, `is_superuser` |
+| `bicycles` | Каталог велосипедів | `id`, `name`, `brand`, `type`, `price_per_hour`, `is_available`, `owner_id` |
+| `rentals` | Оренди велосипедів | `id`, `user_id`, `bicycle_id`, `hours`, `total_price`, `status` |
+| `tariffs` | Тарифні плани (знижки) | `id`, `name`, `discount_percent`, `min_hours` |
+| `clients` | Клієнти прокату (орендарі без аккаунту в системі) | `id`, `name`, `phone_number`, `email`, `loyalty_points` |
+| `routes` | Маршрути для катання | `id`, `name`, `distance_km`, `difficulty_level` |
+| `repairs` | Записи про ремонти | `id`, `bicycle_id`, `repair_type`, `performer`, `warranty_days` |
+| `spare_parts` | Запасні частини | `id`, `name`, `brand`, `category`, `price`, `quantity` |
+| `accessories` | Аксесуари | `id`, `name`, `category`, `brand`, `sale_price`, `quantity` |
+| `bicycle_accessories` | Зв'язок велосипед↔аксесуар (M:M) | `bicycle_id`, `accessory_id` |
+| `repair_spare_parts` | Зв'язок ремонт↔запчастина (M:M) | `repair_id`, `spare_part_id`, `quantity_used` |
+
+> **`users` vs `clients`:** `users` — це облікові записи для входу в систему (власники велосипедів, адміністратори). `clients` — це орендарі, яких реєструє адміністратор при оформленні оренди; вони можуть не мати аккаунту в системі.
+
+---
+
+### Схема зв'язків між таблицями
+
+```
+users ──────────────────────────────────────┐
+  │                                          ↓
+  └──── bicycles ──────────────────── rentals ──── tariffs
+             │      (bicycle_id/user_id) │
+             │                           ├──── clients
+             │                           └──── routes
+             │
+             ├──── repairs ──── repair_spare_parts ──── spare_parts
+             │
+             └──── bicycle_accessories ──── accessories
+```
 
 ---
 
