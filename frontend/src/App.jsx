@@ -14,6 +14,7 @@ import DetailModal from './components/DetailModal'
 import RentModal from './components/RentModal'
 import ProfileModal from './components/ProfileModal'
 import Toast from './components/Toast'
+import DbInfoCard from './components/DbInfoCard'
 import RoutesPage from './pages/RoutesPage'
 import TariffsPage from './pages/TariffsPage'
 import RentalsPage from './pages/RentalsPage'
@@ -306,6 +307,10 @@ export default function App() {
             <div className="footer-col-title">Контакти</div>
             <span className="footer-link">📧 info@bikehouse.ua</span>
             <span className="footer-link">📍 Вінниця, Україна</span>
+          </div>
+          <div className="footer-col">
+            <div className="footer-col-title">Сховище даних</div>
+            <DbInfoCard />
           </div>
         </div>
         <div className="footer-bottom">

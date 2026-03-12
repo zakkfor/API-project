@@ -178,7 +178,11 @@ export async function deleteSparePart(id) {
   return apiFetch(`/spare-parts/${id}`, { method: 'DELETE' })
 }
 
-// ── Accessories ───────────────────────────────────────────
+// ── DB Info ───────────────────────────────────────────────
+export async function getDbInfo() {
+  return apiFetch('/info')
+}
+
 export async function getAccessories(params = {}) {
   const q = new URLSearchParams()
   if (params.category) q.set('category', params.category)
