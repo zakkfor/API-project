@@ -11,9 +11,6 @@ COPY run.py .
 COPY app/ ./app/
 COPY static/ ./static/
 
-# Copy env example as default env (override at runtime)
-COPY .env.example .env
-
 # Persistent data directory (use Railway Volume mounted at /data for persistence)
 RUN mkdir -p /data
 
